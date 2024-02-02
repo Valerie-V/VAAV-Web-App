@@ -153,7 +153,7 @@ function Auditing({
           required
           onChange={handleHour}
           min="1"
-          max="24.000000000"
+          max="24.00000000000"
         />
 
         <Fab
