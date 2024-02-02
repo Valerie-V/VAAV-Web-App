@@ -67,7 +67,7 @@ function ProductInfo({ product }) {
           <img src={product.image[activeImage]} alt="" className='w-full'/>
           <div className="flex">
             {product.image.map((img,index)=>(
-              <button key={index} className='p-0 bg-none rounded-none focus:opacity-30 border border-primary' onClick={()=>handleImageChange(index)}>
+              <button key={index} className='p-0 bg-none rounded-none focus:opacity-40 border border-primary' onClick={()=>handleImageChange(index)}>
                 <img src={img} alt="" className='w-[35px] h-[35px]:' />
               </button>
             ))}
@@ -80,13 +80,13 @@ function ProductInfo({ product }) {
             <strong>{price}</strong>
           </p>
           <div className="productInfo__battery">
-          <Button variant="contained" className='focus:opacity-30 bg-[#0c6525]' id='batt1' ref={defaultButtonRef} onClick={handleAlone} sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor: 'gray'}}}>Alone</Button>
-          <Button variant="contained" className='focus:opacity-30 bg-[#0c6525]' id='batt2' ref={anotherButtonRef}  onClick={handleSolar} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor: 'gray'}}}>With solar</Button>
+          <Button variant="contained" className='focus:opacity-40 bg-[#0c6525]' id='batt1' ref={defaultButtonRef} onClick={handleAlone} sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Alone</Button>
+          <Button variant="contained" className='focus:opacity-40 bg-[#0c6525]' id='batt2' ref={anotherButtonRef}  onClick={handleSolar} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>With solar</Button>
             {/* <button id='batt1' onClick={handleAlone}>Alone</button> */}
             {/* <button id='batt2' onClick={handleSolar}>With solar </button> */}
           </div>
           <div className="flex mt-2">
-          <Button variant="contained"   onClick={(e) => handleClick(e, setAnchorEl1)} className='btn1 focus:opacity-30 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor: 'gray'}}}>Buy</Button>
+          <Button variant="contained"   onClick={(e) => handleClick(e, setAnchorEl1)} className='btn1 focus:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Buy</Button>
               {/* <button  type="button" onClick={handleClick} >
               Buy
               </button> */}
@@ -111,7 +111,7 @@ function ProductInfo({ product }) {
                 </div>
               </Popover>
             
-              <Button variant="contained" className='btn3 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl2)}  sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor: 'gray'}}}>Installment</Button>
+              <Button variant="contained" className='btn3 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl2)}  sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Installment</Button>
               <Popover
                 open={open2}
                 anchorEl={anchorEl2}
@@ -133,7 +133,7 @@ function ProductInfo({ product }) {
                  Installment coming soon...
                 </Alert>
               </Popover>
-              <Button variant="contained" className='btn2 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl3)} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor: 'gray'}}}>Rent</Button>
+              <Button variant="contained" className='btn2 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl3)} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Rent</Button>
               <Popover
                 open={open3}
                 anchorEl={anchorEl3}
