@@ -117,7 +117,7 @@ function Auditing({
     
   return (
     <div className="houseAudit flex justify-center">
-    <div className=" bg-black bg-opacity-[0.04] h-auto w-auto flex flex-col p-8 rounded-3xl">
+    <div className=" bg-black bg-opacity-[0.04] h-auto md:w-auto w-[90%] flex flex-col p-8 rounded-3xl">
       <form className="inputs mb-3" onSubmit={handleSubmit}>
         <input
         className='h-7 border-0 mr-3 rounded-xl pl-3'
