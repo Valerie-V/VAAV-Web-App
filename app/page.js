@@ -3,6 +3,7 @@ import Nav from "./nav";
 import Features from "./features";
 import Access from "./access";
 import Roadmap from "./roadmap";
+import Footer from "./footer";
 
 export default function Home() {
   
@@ -13,6 +14,7 @@ export default function Home() {
       <Features/>
       <Access/>
       <Roadmap/>
+      <Footer/>
     </main>
   );
 }
