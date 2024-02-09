@@ -19,8 +19,12 @@ function Footer() {
         </div>
         <p className='text-primary'>&copy; 2024 VAAV, Ltd</p>
         <div>
+            <Link href="/#home">
             <LinkedInIcon className='text-primary text-lg mr-4'/>
+            </Link>
+            <Link href="/#home">
             <XIcon className='text-primary text-lg'/>
+            </Link>
         </div>
     </div>
   )

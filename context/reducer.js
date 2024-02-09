@@ -1,4 +1,5 @@
 export const initialState = {
+    basket:[],
     products: [
         {
             id:'1',
@@ -350,10 +351,21 @@ export const initialState = {
 
 export const reducer = (state, action) => {
     switch (action.type) {
-      case 'INCREMENT':
-        return {  };
-      case 'DECREMENT':
-        return {  };
+      case 'SET_ITEMS':
+        return { 
+            ...state,
+            basket:action.payload
+         };
+      case 'ADD_TO_BASKET':
+        return { 
+            ...state,
+            basket:[...state.basket, action.payload]
+         };
+      case 'REMOVE_FROM_BASKET':
+        return { 
+            ...state,
+            basket:state.basket.filter(item => item.id!== action.payload)
+         };
       default:
         return state;
     }

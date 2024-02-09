@@ -10,6 +10,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import Info from './info';
 
 function ProductInfo({ product }) {
 
@@ -160,7 +161,8 @@ function ProductInfo({ product }) {
           </div>
         </div>
       </section>
-      <div className="border-b border-primary text-base pb-1 mb-2">
+      <Info product={product}/>
+      {/* <div className="border-b border-primary text-base pb-1 mb-2">
         <p className='text-primary text-lg font-bold'>Description :</p>
         <p>{product.description}</p>
           <div className="power grid grid-cols-3 md:grid-cols-5 mt-2 place-items-center gap-y-1 md:gap-y-2">
@@ -179,9 +181,9 @@ function ProductInfo({ product }) {
             }
             
           </div>
-      </div>
+      </div> */}
       <div className="border-b border-primary text-base pb-1 mb-2">
-        <p className='text-primary text-lg font-semibold'>Features :</p>
+        <p className='text-primary text-lg font-semibold mt-3'>Features :</p>
         <div className="feature__list grid grid-cols-1 md:grid-cols-2">
           <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Fast dual charging&#40;AC/Solar&#41;</p>
           <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Easy to use&#40;plug and play&#41;</p>
@@ -190,7 +192,7 @@ function ProductInfo({ product }) {
         </div>
       </div>
       <div className="text-sm mb-2">
-      <Accordion>
+      {/* <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -285,7 +287,7 @@ function ProductInfo({ product }) {
           </Accordion>
           
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       </div>
     </div>
   )
