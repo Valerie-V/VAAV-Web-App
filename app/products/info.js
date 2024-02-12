@@ -4,6 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { createMuiTheme, ThemeProvider } from '@mui/material/styles';
 
 function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -44,23 +45,26 @@ function Info({product}) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#0c6525', // Override primary color to red
+      },
+      secondary: {
+        main: '#ffff', // Override secondary color to green
+      },
+    },
+  });
 
   return (
+    <ThemeProvider theme={theme}>
     <div className='border-b border-primary text-base '>
         <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{
-        '& .Mui-selected': {
-          color: '#0c6525', // Change the text color
-          backgroundColor: '', // Change the background color
-        },
-        '& .MuiTabs-indicator': {
-            backgroundColor: '#0c6525', // Personalized color for the underline
-          },
-      }}>
-          <Tab label="Description" {...a11yProps(0)} sx={{color:'#0c6525',fontSize:'16px',fontWeight:'600'}} />
-          <Tab label="Specification" {...a11yProps(1)}  sx={{color:'#0c6525',fontSize:'16px',fontWeight:'600'}}/>
-          <Tab label="Spec in Pictures" {...a11yProps(2)}  sx={{color:'#0c6525',fontSize:'16px',fontWeight:'600'}}/>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='text-primary' indicatorColor="primary" sx={{width:'100%'}}>
+          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[30%]' />
+          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[30%]'/>
+          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[30%]'/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -152,6 +156,7 @@ function Info({product}) {
       </CustomTabPanel>
     </Box>
     </div>
+    </ThemeProvider>
   )
 }
 

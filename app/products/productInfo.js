@@ -77,7 +77,7 @@ function ProductInfo({ product }) {
         <div className="productInfo__namePrice mt-2">
           
           <p className="text-xl text-heading mb-1">
-            <small>&#x20A6;</small>
+            <strong>&#x20A6; </strong>
             <strong>{price}</strong>
           </p>
           <div className="productInfo__battery">
