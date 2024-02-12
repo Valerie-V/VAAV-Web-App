@@ -62,9 +62,15 @@ function Info({product}) {
         <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='text-primary' indicatorColor="primary" >
-          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important' />
-          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important'/>
-          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important'/>
+          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0'  sx={{'@media (max-width:768px)': {
+          fontSize: "11px",  // Adjust font size for smaller screens
+        },}} />
+          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0' sx={{ '@media (max-width:600px)': {
+          fontSize: "11px" ,// Adjust font size for smaller screens
+        },}}/>
+          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0' sx={{ '@media (max-width:600px)': {
+          fontSize: "11px", // Adjust font size for smaller screens
+        },}}/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
