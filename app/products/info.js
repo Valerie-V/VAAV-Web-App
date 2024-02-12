@@ -62,9 +62,9 @@ function Info({product}) {
         <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='text-primary' indicatorColor="primary" >
-          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0' />
-          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0'/>
-          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0'/>
+          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important' />
+          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important'/>
+          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0 !important'/>
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
