@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 function HomePage() {
@@ -13,7 +14,9 @@ function HomePage() {
         <p className='text-[16px] md:text-[17px] md:pr-[110px] leading-loose font-normal mb-6'>
         Be part of an ecosystem that enjoys clean and affordable energy with our customized energy systems.
         </p>
-        <button className='bg-primary text-white py-[15px] px-7 rounded-3xl text-base font-medium leading-tight'>Get Stated</button>
+        <Link href='/audit'>
+        <button className='bg-primary text-white py-[15px] px-7 rounded-3xl text-base font-medium leading-tight'>Get Started</button>
+        </Link>
       </div>
       <div className="right md:pr-8 pr-1">
         <img src='/illustrations/solar-house.png' alt="" className='w-full' />

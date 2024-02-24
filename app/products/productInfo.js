@@ -2,17 +2,28 @@
 import React from 'react'
 import { useState,useRef,useEffect } from 'react';
 import Popover from '@mui/material/Popover';
-import Button from '@mui/material/Button';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Info from './info';
+import Link from 'next/link';
+import { useStateValue } from '@/context/StateProvider'
 
 function ProductInfo({ product }) {
+  const [{basket}, dispatch] = useStateValue()
+  const addToBasket = () => {
+    //add item to basket
+    dispatch({
+      type:'ADD_TO_BASKET',
+      payload: {
+        name: product.name,
+        image: product.image[0],
+        price: price,
+        
+      },
+    })
+  }
 
   const [activeImage, setActiveImage] = useState(0)
   const[price,setPrice] = useState(product.price1)
@@ -22,7 +33,9 @@ function ProductInfo({ product }) {
   const anotherButtonRef = useRef(null);
 
   useEffect(() => {
-    defaultButtonRef.current.focus();
+  
+    defaultButtonRef.current.focus() 
+    
   }, []);
 
   const handleFocus = (buttonId) => {
@@ -38,6 +51,8 @@ function ProductInfo({ product }) {
     setPrice(product.price2)
   }
 
+
+
   
   
   const handleImageChange = (newIndex) => {
@@ -49,8 +64,10 @@ function ProductInfo({ product }) {
   const [anchorEl3, setAnchorEl3] = useState(null);
 
   const handleClick = (event, anchorElSetter) => {
+    addToBasket()
     anchorElSetter(event.currentTarget);
   };
+  
 
   const handleClose = (anchorElSetter) => {
     anchorElSetter(null);
@@ -78,7 +95,7 @@ function ProductInfo({ product }) {
           
           <p className="text-xl text-heading mb-1">
             <strong>&#x20A6; </strong>
-            <strong>{price}</strong>
+            <strong>{price.toLocaleString()}</strong>
           </p>
           <div className="productInfo__battery">
           <Button variant="contained" className='focus:opacity-40 bg-[#0c6525]' id='batt1' ref={defaultButtonRef} onClick={handleAlone} sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Alone</Button>
@@ -87,14 +104,14 @@ function ProductInfo({ product }) {
             {/* <button id='batt2' onClick={handleSolar}>With solar </button> */}
           </div>
           <div className="flex mt-2">
-          <Button variant="contained"   onClick={(e) => handleClick(e, setAnchorEl1)} className='btn1 focus:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Buy</Button>
+          <Button variant="contained"   onClick={(e) => handleClick(e, setAnchorEl1)} className='btn1 active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Buy</Button>
               {/* <button  type="button" onClick={handleClick} >
               Buy
               </button> */}
               <Popover
                 open={open1}
                 anchorEl={anchorEl1}
-                onClose={() => handleClose(setAnchorEl1)}
+          
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'center',
@@ -102,13 +119,13 @@ function ProductInfo({ product }) {
                 transformOrigin={{
                   vertical: 'bottom',
                   horizontal: 'center',
-                }}
-      >
-                <div className='popover__btn ' >
-                  <Button color='primary' className='bg-[#444] text-[#aaa] font-bold p-1 rounded-none focus:opacity-30' > Card </Button>
-                  <Button className='bg-[#444] text-[#aaa] font-bold p-1 rounded-none focus:opacity-30'> USSD </Button>
-                  <Button className='bg-[#444] text-[#aaa] font-bold p-1 rounded-none focus:opacity-30'> Transfer </Button>
-                  
+                }} >
+                  <Typography className='p-2 bg-primary text-white'>you have succussfully added this item to cart</Typography>
+                <div className='popover__btn w-full flex justify-between bg-primary px-2 pb-1' >
+                  <Button color='primary' onClick={() => handleClose(setAnchorEl1)} className='bg-white text-primary font-bold p-1  rounded-md hover:bg-[#FFA740]' > Continue shopping </Button>
+                  <Link href='/checkout'>
+                  <Button className='bg-white text-primary font-bold p-1 rounded-md  hover:bg-[#FFA740]'> Go to checkout </Button>
+                  </Link>
                 </div>
               </Popover>
             
@@ -182,15 +199,7 @@ function ProductInfo({ product }) {
             
           </div>
       </div> */}
-      <div className="border-b border-primary text-base pb-1 mb-2">
-        <p className='text-primary text-lg font-semibold mt-3'>Features :</p>
-        <div className="feature__list grid grid-cols-1 md:grid-cols-2">
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Fast dual charging&#40;AC/Solar&#41;</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Easy to use&#40;plug and play&#41;</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Portable</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Automatic switching</p>
-        </div>
-      </div>
+      
       <div className="text-sm mb-2">
       {/* <Accordion>
         <AccordionSummary

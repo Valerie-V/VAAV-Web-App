@@ -1,4 +1,5 @@
 export const initialState = {
+    audit:[],
     basket:[],
     products: [
         {
@@ -6,8 +7,8 @@ export const initialState = {
             name:'PowerCube',
             inverter:'500',
             battery:'960',
-            price1: '250,000',
-            price2: '330,000',
+            price1: 250000,
+            price2: 330000,
             description:'The PowerCube , a portable Powerstattion with battery capacity of 960Wh and output Power of 500W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 10hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/83/6899052/1.jpg?8665','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/83/6899052/3.jpg?8088','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/83/6899052/6.jpg?8088'],
             length:'12in(24cm)',
@@ -57,8 +58,8 @@ export const initialState = {
             name:'PowerCubeX',
             inverter:'1000',
             battery:'1800',
-            price1: '500,000',
-            price2: '800,000',
+            price1: 500000,
+            price2: 800000,
             description:'The PowerCube X, a portable Powerstattion with battery capacity of 1800Wh and output Power of 1000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 12 hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/65/6514162/1.jpg?0647','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/65/6514162/2.jpg?1861','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/65/6514162/3.jpg?1861'],
             length:'22in(35cm)',
@@ -118,8 +119,8 @@ export const initialState = {
             name:'PowerCubeXtra',
             inverter:'3000',
             battery:'5000',
-            price1: '2,000,000',
-            price2: '3,000,000',
+            price1: 2000000,
+            price2: 3000000,
             description:'The PowerCube Xtra is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 3000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/95/6514162/1.jpg?1862','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/95/6514162/2.jpg?1862','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/95/6514162/3.jpg?1862'],
             length:'45in(90cm)',
@@ -191,8 +192,8 @@ export const initialState = {
             name:'PowerCubeTitan',
             inverter:'5000',
             battery:'5000',
-            price1: '2,500,000',
-            price2: '4,000,000',
+            price1: 2500000,
+            price2: 4000000,
             description:'The PowerCube Titan is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/45/8142752/1.jpg?6522','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/45/8142752/2.jpg?4165','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/45/8142752/3.jpg?4165'],
             length:'55in(110cm)',
@@ -270,8 +271,8 @@ export const initialState = {
             name:'PowerCubeTitan2',
             inverter:'5000',
             battery:'10000',
-            price1: '4,000,000',
-            price2: '5,500,000',
+            price1: 4000000,
+            price2: 5500000,
             description:'The PowerCube Titan2 is a portable Powerstattion with battery capacity of over 10000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/05/8142752/1.jpg?4575','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/05/8142752/2.jpg?0951','https://ng.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/05/8142752/3.jpg?0951'],
             length:'100in(200cm)',
@@ -346,8 +347,11 @@ export const initialState = {
          },
         
     ],
-    user:null
 };
+
+
+export const getBasketTotal = (basket) => 
+basket?.reduce((amount, item) => item.price + amount,0)
 
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -357,14 +361,34 @@ export const reducer = (state, action) => {
             basket:action.payload
          };
       case 'ADD_TO_BASKET':
-        return { 
+        const isItemInBasket = state.basket.some(item => item.name === action.payload.name);
+            if (isItemInBasket){
+            return state;
+            } else
+                return { 
             ...state,
-            basket:[...state.basket, action.payload]
+            basket:[...state.basket,  action.payload]
+         };
+      case 'ADD_TO_AUDIT':
+        const isItemInAudit = state.audit.some(item => item.id === action.payload.id);
+            if (isItemInAudit){
+            return state;
+            } else
+                return { 
+            ...state,
+            audit:[...state.audit,  action.payload]
          };
       case 'REMOVE_FROM_BASKET':
         return { 
+            
             ...state,
-            basket:state.basket.filter(item => item.id!== action.payload)
+            basket:state.basket.filter(item => item.name!== action.payload)
+         };
+      case 'REMOVE_FROM_AUDIT':
+        return { 
+            
+            ...state,
+            audit:state.audit.filter(item => item.id!== action.payload)
          };
       default:
         return state;

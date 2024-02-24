@@ -12,6 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useStateValue } from '@/context/StateProvider';
+
 
 function Auditing({
     audits,
@@ -21,6 +23,9 @@ function Auditing({
     myPower,
     setMyPower,
   }) {
+    const [{audit,}, dispatch] = useStateValue()
+    
+
 
     const [auditEquipment, setAuditEquipment] = useState("");
     const [auditRating, setAuditRating] = useState("");
@@ -41,6 +46,19 @@ function Auditing({
         dailyUsage: auditHours,
         dailyEnergy: total,
       };
+      dispatch({
+        type:'ADD_TO_AUDIT',
+        payload: {
+          id:newAudit.id,
+          equipment: newAudit.equipment,
+          rating: newAudit.rating,
+          quantity: newAudit.quantity,
+          totalPower: newAudit.totalPower,
+          dailyUsage: newAudit.dailyUsage,
+          dailyEnergy: newAudit.dailyEnergy,
+          
+        },
+      })
       const allAudit = [...audits, newAudit];
       setAudits(allAudit);
       setAuditEquipment("");
@@ -50,6 +68,7 @@ function Auditing({
     };
     let sum = 0;
     let equ = 0;
+    console.log(audit)
     useEffect(() => {
         const handleAudit = () => {
           const eachAudit = audits.map(
@@ -81,6 +100,16 @@ function Auditing({
       const handleDelete = (id) => {
         const newList = audits.filter((audit) => audit.id !== id);
         setAudits(newList);
+
+        dispatch({
+          type: 'REMOVE_FROM_AUDIT',
+          payload: id
+          
+      })
+      };
+      const handleSelect = (event) => {
+        setAuditRating(event.target.value);
+        setAuditEquipment(event.target.options[event.target.selectedIndex].text)
       };
     
       function createData(
@@ -116,22 +145,35 @@ function Auditing({
       );
     
   return (
-    <div className="houseAudit flex justify-center">
+    <div className="houseAudit flex justify-center z-[1]">
     <div className=" bg-black bg-opacity-[0.04] h-auto md:w-auto w-[90%] flex flex-col p-8 rounded-3xl">
       <form className="inputs mb-3" onSubmit={handleSubmit}>
-        <input
+        {/* <input
         className='h-7 border-0 mr-3 rounded-xl pl-3 mb-1'
           type="text"
           placeholder="Equipment"
           value={auditEquipment}
           required
           onChange={(e) => setAuditEquipment(e.target.value)}
-        />
+        /> */}
+        <select name="equipment" id="equipment" className='h-7 border-0 mr-3 rounded-xl pl-3 mb-1' onChange={handleSelect}>
+          <option value="">--Equipments--</option>
+          <option value="10">Bulb</option>
+          <option value="45">Fan</option>
+          <option value="150">TV</option>
+          <option value="65">Laptop</option>
+          <option value="30">Phone</option>
+          <option value="960">Microwave</option>
+          <option value="2000">Electric Iron</option>
+          <option value="300">Fridge</option>
+          <option value="600">Blender</option>
+          <option value="2000">Pumping Machine</option>
+        </select>
         <input
         className='h-7 border-0 mr-3 rounded-xl pl-3 mb-1'
           type="number"
           placeholder="Rating(Watt)"
-          value={auditRating}
+          value={auditRating} watts
           required
           onChange={(e) => setAuditRating(e.target.value)}
           min="1"
@@ -164,6 +206,7 @@ function Auditing({
           }}
           size="small"
           aria-label="add"
+          className='z-[1]'
         >
           <AddIcon />
         </Fab>

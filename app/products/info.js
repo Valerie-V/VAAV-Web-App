@@ -74,7 +74,7 @@ function Info({product}) {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-      <div className=" mb-2">
+      <div className=" ">
         <p className='text-primary text-lg font-bold'>Description :</p>
         <p>{product.description}</p>
           <div className="power grid grid-cols-3 md:grid-cols-5 mt-2 place-items-center gap-y-1 md:gap-y-2">
@@ -93,6 +93,15 @@ function Info({product}) {
             }
             
           </div>
+        <div className="border-t border-primary text-base pb-1 mt-2">
+        <p className='text-primary text-lg font-semibold mt-3'>Features :</p>
+        <div className="feature__list grid grid-cols-1 md:grid-cols-2">
+          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Fast dual charging&#40;AC/Solar&#41;</p>
+          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Easy to use&#40;plug and play&#41;</p>
+          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Portable</p>
+          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Automatic switching</p>
+        </div>
+      </div>
       </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
