@@ -8,14 +8,14 @@ import { useEffect } from 'react'
 function Products() {
     const [{products}, dispatch] = useStateValue()
 
-    useEffect(() => {
-      fetch('http://localhost:3001/items')
-        .then(response => response.json())
-        .then(data => {
-          dispatch({ type: 'SET_ITEMS', payload: data });
-        })
-        .catch(error => console.error('Error fetching items:', error));
-    }, []);
+    // useEffect(() => {
+    //   fetch('http://localhost:3001/items')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //       dispatch({ type: 'SET_ITEMS', payload: data });
+    //     })
+    //     .catch(error => console.error('Error fetching items:', error));
+    // }, []);
     
   return (
     <section className='h-auto w-full flex justify-center content-center pt-20 md:px-5 px-2 '>

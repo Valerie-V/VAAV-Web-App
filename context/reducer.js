@@ -350,8 +350,11 @@ export const initialState = {
 };
 
 
-export const getBasketTotal = (basket) => 
-basket?.reduce((amount, item) => item.price + amount,0)
+
+export const getBasketTotal = (basket) => {
+    let price = basket?.map((item) => item.price * item.qty);
+    return price.reduce((amount, item) => item + amount, 0);
+  };
 
 export const reducer = (state, action) => {
     switch (action.type) {
@@ -390,6 +393,14 @@ export const reducer = (state, action) => {
             ...state,
             audit:state.audit.filter(item => item.id!== action.payload)
          };
+         case 'UPDATE_BASKET_ITEM':
+            const { name, qty } = action.payload;
+            return {
+              ...state,
+              basket: state.basket.map(item =>
+                item.name === name ? { ...item, qty: qty } : item
+              )
+            };
       default:
         return state;
     }

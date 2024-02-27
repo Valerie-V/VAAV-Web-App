@@ -20,6 +20,7 @@ function ProductInfo({ product }) {
         name: product.name,
         image: product.image[0],
         price: price,
+        qty: 1
         
       },
     })
@@ -28,6 +29,7 @@ function ProductInfo({ product }) {
   const [activeImage, setActiveImage] = useState(0)
   const[price,setPrice] = useState(product.price1)
   const [focusedButton, setFocusedButton] = useState('alone');
+  
 
   const defaultButtonRef = useRef(null);
   const anotherButtonRef = useRef(null);
@@ -51,8 +53,7 @@ function ProductInfo({ product }) {
     setPrice(product.price2)
   }
 
-
-
+ 
   
   
   const handleImageChange = (newIndex) => {
@@ -66,6 +67,7 @@ function ProductInfo({ product }) {
   const handleClick = (event, anchorElSetter) => {
     addToBasket()
     anchorElSetter(event.currentTarget);
+    
   };
   
 
@@ -76,7 +78,6 @@ function ProductInfo({ product }) {
   const open1 = Boolean(anchorEl1);
   const open2 = Boolean(anchorEl2);
   const open3 = Boolean(anchorEl3);
-
 
   return (
      <div className='w-full'>

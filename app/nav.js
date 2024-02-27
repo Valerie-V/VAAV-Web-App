@@ -6,11 +6,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { IoIosHelpCircleOutline } from "react-icons/io";
 import { TiShoppingCart } from "react-icons/ti";
-import { useStateValue } from '@/context/StateProvider'
 
-function Nav() {
 
-  
+function Nav({ basket }) {
+
+  console.log(basket)
 
   const [open, setOpen] = useState(false);
 
@@ -30,9 +30,9 @@ function Nav() {
         <div className='flex justify-self-end'>
         <Link href="/checkout" className='md:hidden text-base font-normal flex mr-3'>
         <TiShoppingCart className=' text-2xl'/>
-        <div className='bg-primary absolute top-[16px] right-[50px] w-4 h-4  rounded-[100%] flex justify-center items-center'>
-        <span className=' text-white '>2</span>
-        </div>
+        {/* <div className='bg-primary absolute top-[16px] right-[50px] w-4 h-4  rounded-[100%] flex justify-center items-center'>
+        <span className=' text-white '>{basket}</span>
+        </div> */}
         </Link>
         <div className='menu__icon text-primary md:hidden cursor-pointer' onClick={handleClickOpen}>< MenuIcon fontSize='medium' /></div>
         </div>
@@ -50,10 +50,10 @@ function Nav() {
         Help
         </Link>
         <Link href="/checkout" className='flex text-base font-normal '>
-        <TiShoppingCart className=' text-2xl mr-1'/>
-        <div className='bg-primary absolute top-[16px] right-[60px] w-4 h-4 rounded-[100%] flex justify-center items-center'>
-        <span className=' text-white '>4</span>
-        </div>
+        <TiShoppingCart className=' text-2xl mr-[2px]'/>
+        {/* <div className='bg-primary absolute top-[16px] right-[60px] w-4 h-4 rounded-[100%] flex justify-center items-center'>
+        <span className=' text-white '>{basket ? basket.length : 0}</span>
+        </div> */}
         Cart
         </Link>
       </div>
