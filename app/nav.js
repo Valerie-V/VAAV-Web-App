@@ -10,7 +10,7 @@ import { TiShoppingCart } from "react-icons/ti";
 
 function Nav({ basket }) {
 
-  console.log(basket)
+
 
   const [open, setOpen] = useState(false);
 

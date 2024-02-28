@@ -4,7 +4,7 @@ export const initialState = {
     products: [
         {
             id:'1',
-            name:'PowerCube',
+            name:['PowerCube','PowerCube+Solar'],
             inverter:'500',
             battery:'960',
             price1: 250000,
@@ -55,7 +55,7 @@ export const initialState = {
 
         {
             id:'2',
-            name:'PowerCubeX',
+            name:['PowerCubeX','powerCubeX+Solar'],
             inverter:'1000',
             battery:'1800',
             price1: 500000,
@@ -116,7 +116,7 @@ export const initialState = {
          },
         {
             id:'3',
-            name:'PowerCubeXtra',
+            name:['PowerCubeXtra','PowerCubeXtra+Solar'],
             inverter:'3000',
             battery:'5000',
             price1: 2000000,
@@ -189,7 +189,7 @@ export const initialState = {
          },
         {
             id:'4',
-            name:'PowerCubeTitan',
+            name:['PowerCubeTitan','PowerCubeTitan+Solar'],
             inverter:'5000',
             battery:'5000',
             price1: 2500000,
@@ -268,7 +268,7 @@ export const initialState = {
          },
         {
             id:'5',
-            name:'PowerCubeTitan2',
+            name:['PowerCubeTitan2','PowerCubeTitan2+Solar'],
             inverter:'5000',
             battery:'10000',
             price1: 4000000,

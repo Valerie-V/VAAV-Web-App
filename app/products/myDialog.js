@@ -29,7 +29,7 @@ function MyDialog({ product }) {
             <Product product={product}/>
         </Button>
         <Dialog open={open} fullWidth maxWidth= 'md' sx={{zIndex:20, }}>
-        <DialogTitle sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'10px',color:'#0c6525',fontWeight:'600', display:'flex',justifyContent:'space-between'}}>{product.name}
+        <DialogTitle sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'10px',color:'#0c6525',fontWeight:'600', display:'flex',justifyContent:'space-between'}}>{product.name[0]}
             <CancelOutlinedIcon fontSize='large' onClick={handleClose} sx={{color:'#d62828', cursor:'pointer'}}/> 
         </DialogTitle>
             <DialogContent  >

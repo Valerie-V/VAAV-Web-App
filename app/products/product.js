@@ -8,7 +8,7 @@ function Product({ product }) {
       
     <img className='w-full' src={product.image[0]} alt="" />
       <div className="mb-3 text-left">
-          <h2 className='text-primary text-lg mb-1 border-b border-primary font-bold'>{product.name}</h2>
+          <h2 className='text-primary text-lg mb-1 border-b border-primary font-bold'>{product.name[0]}</h2>
           <p className="text-primary text-base font-semibold">Description:</p>
           <p className='text-heading opacity-75 text-sm'>{product.description.length <= 115 ? product.description :`${product.description.slice(0,115)}...` }</p>
       </div> 

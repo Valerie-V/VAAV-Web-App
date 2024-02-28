@@ -17,7 +17,7 @@ function ProductInfo({ product }) {
     dispatch({
       type:'ADD_TO_BASKET',
       payload: {
-        name: product.name,
+        name: name,
         image: product.image[0],
         price: price,
         qty: 1
@@ -28,6 +28,7 @@ function ProductInfo({ product }) {
 
   const [activeImage, setActiveImage] = useState(0)
   const[price,setPrice] = useState(product.price1)
+  const[name,setName] = useState(product.name[0])
   const [focusedButton, setFocusedButton] = useState('alone');
   
 
@@ -51,6 +52,7 @@ function ProductInfo({ product }) {
   const handleSolar = ()=>{
     handleFocus('solar')
     setPrice(product.price2)
+    setName(product.name[1])
   }
 
  
