@@ -38,6 +38,7 @@ function ProductInfo({ product }) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    addToBasket()
   };
 
   const handleCloseDialog = () => {
