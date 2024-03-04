@@ -25,7 +25,7 @@ function CheckoutProduct({item}) {
       }
     });
   };
-  const [qty, setQty] = useState(1)
+  const [qty, setQty] = useState(item.qty)
   
   const handleAdd = ()=>{
     setQty(Math.max(qty+1,1))

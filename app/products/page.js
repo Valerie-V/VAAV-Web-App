@@ -17,6 +17,7 @@ function Products() {
     //     .catch(error => console.error('Error fetching items:', error));
     // }, []);
     
+    
   return (
     <section className='h-auto w-full flex justify-center content-center pt-20 md:px-5 px-2 '>
       <div className='md:w-full md:grid md:grid-cols-4 grid-cols-1 gap-y-2 '>

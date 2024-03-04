@@ -6,7 +6,7 @@ import { useStateValue } from '@/context/StateProvider'
 
 function SubTotal() {
   const [{basket}, dispatch] = useStateValue()
-
+console.log(basket)
   return (
     <div className='md:w-[280px] w-full h-auto  p-2 z-[1] rounded-xl shadow-2xl'>
       <h1 className=' border-b border-primary border-opacity-[0.4] text-xl py-2'>Cart summary</h1>
