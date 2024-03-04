@@ -7,6 +7,9 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Info from './info';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import Link from 'next/link';
 import { useStateValue } from '@/context/StateProvider'
 
@@ -30,6 +33,16 @@ function ProductInfo({ product }) {
   const[price,setPrice] = useState(product.price1)
   const[name,setName] = useState(product.name[0])
   const [focusedButton, setFocusedButton] = useState('alone');
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
   
 
   const defaultButtonRef = useRef(null);
@@ -107,54 +120,22 @@ function ProductInfo({ product }) {
             {/* <button id='batt2' onClick={handleSolar}>With solar </button> */}
           </div>
           <div className="flex mt-2">
-          <Button variant="contained"   onClick={(e) => handleClick(e, setAnchorEl1)} className='btn1 active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Buy</Button>
-              {/* <button  type="button" onClick={handleClick} >
-              Buy
-              </button> */}
-              <Popover
-                open={open1}
-                anchorEl={anchorEl1}
-          
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }} >
-                  <Typography className='p-2 bg-primary text-white'>you have succussfully added this item to cart</Typography>
-                <div className='popover__btn w-full flex justify-between bg-primary px-2 pb-1' >
-                  <Button color='primary' onClick={() => handleClose(setAnchorEl1)} className='bg-white text-primary font-bold p-1  rounded-md hover:bg-[#FFA740]' > Continue shopping </Button>
-                  <Link href='/checkout'>
-                  <Button className='bg-white text-primary font-bold p-1 rounded-md  hover:bg-[#FFA740]'> Go to checkout </Button>
-                  </Link>
-                </div>
-              </Popover>
+          <Button variant="contained"   onClick={handleClickOpen} className='btn1 active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Add to cart</Button>
+          <Dialog open={open} onClose={handleCloseDialog}  maxWidth= 'small' sx={{zIndex:20, }}>
+                  <DialogTitle className='text-base md:text-lg font-bold' sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'10px',color:'#0c6525',fontWeight:'500', display:'flex',justifyContent:'center'}}>Product added to cart successfully</DialogTitle>
+                      <DialogContent  >
+                       <div className='flex  flex-col-reverse md:flex-row gap-2 justify-center items-center'>
+                        <Button variant="contained" className=' active:opacity-40 bg-[#0c6525]' onClick={handleCloseDialog} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Continue Shopping</Button>
+                        <Link href='/checkout'>
+                        <Button variant="contained" className=' active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Go to cart</Button>
+                        </Link>
+                       </div>
+                      </DialogContent>
+                      
+                  </Dialog>
             
-              <Button variant="contained" className='btn3 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl2)}  sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Installment</Button>
-              <Popover
-                open={open2}
-                anchorEl={anchorEl2}
-                onClose={() => handleClose(setAnchorEl2)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <Alert severity="info">
-                <AlertTitle>Installment</AlertTitle>
-                Price:
-                <small>&#x20A6;</small>
-                 <strong>{product.price}</strong><br/>
-                 Installment coming soon...
-                </Alert>
-              </Popover>
-              <Button variant="contained" className='btn2 focus:opacity-30 bg-[#0c6525]' onClick={(e) => handleClick(e, setAnchorEl3)} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Rent</Button>
+              
+              <Button variant="contained" className='btn2 focus:opacity-30 bg-[#FFA740]' onClick={(e) => handleClick(e, setAnchorEl3)} sx={{background: '#FFA740',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Rent</Button>
               <Popover
                 open={open3}
                 anchorEl={anchorEl3}

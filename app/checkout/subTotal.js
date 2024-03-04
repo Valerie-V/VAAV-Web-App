@@ -14,8 +14,8 @@ function SubTotal() {
         <p>Subtotal</p>
         <p>&#x20A6;{getBasketTotal(basket).toLocaleString()}</p>
       </div>
-      <Link href='/products' className='mt-2 '>
-        <Button variant='contained' className='bg-primary ' sx={{background: '#0c6525',width:'100%',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Checkout</Button>
+      <Link href='' className='mt-2'>
+        <Button variant='contained' className='bg-primary' sx={{background: '#0c6525',width:'100%',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Checkout</Button>
       </Link>
     </div>
   )
