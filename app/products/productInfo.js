@@ -124,10 +124,10 @@ function ProductInfo({ product }) {
           <Dialog open={open} onClose={handleCloseDialog}  maxWidth= 'small' sx={{zIndex:20, }}>
                   <DialogTitle className='text-base md:text-lg font-bold' sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'10px',color:'#0c6525',fontWeight:'500', display:'flex',justifyContent:'center'}}>Product added to cart successfully</DialogTitle>
                       <DialogContent  >
-                       <div className='flex  flex-col-reverse md:flex-row gap-2 justify-center items-center'>
-                        <Button variant="contained" className=' active:opacity-40 bg-[#0c6525]' onClick={handleCloseDialog} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Continue Shopping</Button>
+                       <div className='flex  flex-row gap-2 justify-center items-center'>
+                        <button variant="contained" className=' hover:opacity-40 bg-[#0c6525] px-2 py-1 text-white rounded-md' onClick={handleCloseDialog} >Continue Shopping</button>
                         <Link href='/checkout'>
-                        <Button variant="contained" className=' active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Go to cart</Button>
+                        <button variant="contained" className=' hover:opacity-40 bg-[#0c6525] px-2 py-1 text-white rounded-md' >Go to cart</button>
                         </Link>
                        </div>
                       </DialogContent>
