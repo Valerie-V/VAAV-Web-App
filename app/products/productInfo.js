@@ -117,8 +117,8 @@ function ProductInfo({ product }) {
   return (
      <div className='w-full'>
       <section className='flex md:flex-row flex-col  mb-2 pb-1 border-b border-primary'>
-        <div className="md:w-[350px] w-full mr-2">
-          <img src={product.image[activeImage]} alt="" className='w-full'/>
+        <div className="md:w-[350px]  w-full mr-2">
+          <img src={product.image[activeImage]} alt="" className='w-full h-[270px]'/>
           <div className="flex">
             {product.image.map((img,index)=>(
               <button key={index} className='p-0 bg-none rounded-none focus:opacity-40 border border-primary' onClick={()=>handleImageChange(index)}>
