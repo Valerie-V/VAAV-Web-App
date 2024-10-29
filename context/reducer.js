@@ -7,8 +7,8 @@ export const initialState = {
             name:['PowerCube','PowerCube+Solar'],
             inverter:'500',
             battery:'960',
-            price1: 250000,
-            price2: 330000,
+            price1: 350000,
+            price2: 550000,
             description:'The PowerCube , a portable Powerstattion with battery capacity of 960Wh and output Power of 500W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 10hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Powercube-front.jpeg','/product_Img/Powercube-solar.jpeg','/product_Img/Powercube-output.jpeg'],
             length:'12in(24cm)',
@@ -47,7 +47,7 @@ export const initialState = {
                     device:'Phone',
                     img:'/icons/phone-svgrepo-com.svg',
                     rating:'30W',
-                    hours:'33 hours'
+                    hours:'33 Charges'
                 }
             ]
          },
@@ -58,8 +58,8 @@ export const initialState = {
             name:['PowerCubeX','powerCubeX+Solar'],
             inverter:'1000',
             battery:'1800',
-            price1: 700000,
-            price2: 1000000,
+            price1: 800000,
+            price2: 1200000,
             description:'The PowerCube X, a portable Powerstattion with battery capacity of 1800Wh and output Power of 1000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 12 hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Powercube-front.jpeg','/product_Img/Powercube-solar.jpeg','/product_Img/Powercube-output.jpeg'],
             length:'22in(35cm)',
@@ -98,7 +98,7 @@ export const initialState = {
                     device:'Phone',
                     img:'/icons/phone-svgrepo-com.svg',
                     rating:'30W',
-                    hours:'60 hours'
+                    hours:'60 Charges'
                 },
                 {
                     device:'Fridge',
@@ -119,8 +119,8 @@ export const initialState = {
             name:['PowerCubeXtra','PowerCubeXtra+Solar'],
             inverter:'3000',
             battery:'5000',
-            price1: 2500000,
-            price2: 3500000,
+            price1: 2000000,
+            price2: 1000000,
             description:'The PowerCube Xtra is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 3000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Xtra.jpg','/product_Img/Powercube-solar.jpeg','/product_Img/Powercube-output.jpeg'],
             length:'45in(90cm)',
@@ -192,8 +192,8 @@ export const initialState = {
             name:['PowerCubeTitan','PowerCubeTitan+Solar'],
             inverter:'5000',
             battery:'5000',
-            price1: 4000000,
-            price2: 5500000,
+            price1: 3000000,
+            price2: 4000000,
             description:'The PowerCube Titan is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Titan.jpeg','/product_Img/Titan.jpeg','/product_Img/Titan.jpeg'],
             length:'55in(110cm)',
@@ -232,7 +232,7 @@ export const initialState = {
                     device:'Phone',
                     img:'/icons/phone-svgrepo-com.svg',
                     rating:'30W',
-                    hours:'166 hours'
+                    hours:'166 Charges'
                 },
                 {
                     device:'Microwave',
@@ -271,8 +271,8 @@ export const initialState = {
             name:['PowerCubeTitanX','PowerCubeTitanX+Solar'],
             inverter:'5000',
             battery:'10000',
-            price1: 5500000,
-            price2: 7000000,
+            price1: 4500000,
+            price2: 6000000,
             description:'The PowerCube TitanX is a portable Powerstattion with battery capacity of over 10000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Titan.jpeg','/product_Img/Titan.jpeg','/product_Img/Titan.jpeg'],
             length:'100in(200cm)',
@@ -311,7 +311,7 @@ export const initialState = {
                     device:'Phone',
                     img:'/icons/phone-svgrepo-com.svg',
                     rating:'30W',
-                    hours:'332 hours'
+                    hours:'332 Charges'
                 },
                 {
                     device:'Microwave',
