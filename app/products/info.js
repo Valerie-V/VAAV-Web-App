@@ -112,7 +112,7 @@ function Info({product}) {
                   <p>Capacity:<br/>
                     <span>{product.battery}</span></p>
                   <p>Cell Chemistry:<br/>
-                  <span>FP (LiFePO4 battery) </span></p>
+                  <span>BYD (LiFePO4 battery) </span></p>
                   <p>Cycle life:<br/>
                   <span>4000 cycles to 70%+ capacity </span></p>
                   </div>
@@ -121,11 +121,11 @@ function Info({product}) {
                   <h3 className='text-lg font-bold'>Ports</h3>
                   <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
                   <p>AC Output:<br/>
-                  <span>230V~ 50Hz, 25A Max, AC </span></p>
+                  <span>230V~ 50Hz, AC </span></p>
                   <p>AC Input:<br/>
-                  <span>120V, 60Hz, 15A Max </span></p>
+                  <span>220V, 50Hz, (1500W Max) </span></p>
                   <p>DC Input:<br/>
-                  <span> 11V-17.5V, 8A Max, Double to 8A Max 17.5V-60V</span></p>
+                  <span> 13V, 10A Max, Car Charging</span></p>
                   </div>
                 </div>
                 <div className='mb-5'>

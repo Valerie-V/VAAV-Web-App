@@ -7,10 +7,10 @@ export const initialState = {
             name:['PowerCube','PowerCube+Solar'],
             inverter:'500',
             battery:'960',
-            price1: 385000,
-            price2: 700000,
+            price1: 350000,
+            price2: 550000,
             description:'The PowerCube , a portable Powerstattion with battery capacity of 960Wh and output Power of 500W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 10hours during blackouts. Charge quickly with Solar or AC (Nepa)',
-            image:['/product_Img/Powercube-front.jpeg','/product_Img/Powercube-iso.jpeg', '/product_Img/Powercube-front.jpeg'],
+            image:['/product_Img/PHOTO-2025-03-05-11-16-32 (1).jpg','/product_Img/PHOTO-2025-03-05-11-16-32.jpg', '/product_Img/PHOTO-2025-03-05-11-16-32.jpg'],
             length:'12in(24cm)',
             width:'12in(24cm)',
             height:'12in(24cm)',
@@ -56,11 +56,11 @@ export const initialState = {
         {
             id:'2',
             name:['PowerCubeX','powerCubeX+Solar'],
-            inverter:'1000',
-            battery:'1800',
-            price1: 880000,
+            inverter:'2000',
+            battery:'2400',
+            price1: 1200000,
             price2: 1600000,
-            description:'The PowerCube X, a portable Powerstattion with battery capacity of 1800Wh and output Power of 1000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 12 hours during blackouts. Charge quickly with Solar or AC (Nepa)',
+            description:'The PowerCube X, a portable Powerstattion with battery capacity of 2400Wh and output Power of 2000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 12 hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Powercube-iso.jpeg','/product_Img/Powercube-front.jpeg', '/product_Img/Powercube-iso.jpeg'],
             length:'22in(35cm)',
             width:'22in(35cm)',
@@ -74,37 +74,37 @@ export const initialState = {
                     device:'Light',
                     img:'/icons/bulb-svgrepo-com.svg',
                     rating:'10W',
-                    hours:'180 hours'
+                    hours:'180+ hours'
                 },
                 {
                     device:'Fan',
                     img:'/icons/fan-cooler-svgrepo-com.svg',
                     rating:'45W',
-                    hours:'40 hours'
+                    hours:'40+ hours'
                 },
                 {
                     device:'TV',
                     img:'/icons/tv-monitor-svgrepo-com.svg',
                     rating:'150W',
-                    hours:'12 hours'
+                    hours:'12+ hours'
                 },
                 {
                     device:'Laptop',
                     img:'/icons/laptop-svgrepo-com.svg',
                     rating:'65W',
-                    hours:'15 hours'
+                    hours:'15+ hours'
                 },
                 {
                     device:'Phone',
                     img:'/icons/phone-svgrepo-com.svg',
                     rating:'30W',
-                    hours:'60 Charges'
+                    hours:'60+ Charges'
                 },
                 {
                     device:'Fridge',
                     img:'/icons/fridge-svgrepo-com.svg',
                     rating:'300W',
-                    hours:'6 hours'
+                    hours:'6+ hours'
                 },
                 {
                     device:'Blender',
@@ -192,17 +192,17 @@ export const initialState = {
             name:['PowerCubeTitan','PowerCubeTitan+Solar'],
             inverter:'5000',
             battery:'5000',
-            price1: 2900000,
-            price2: 3900000,
+            price1: 3000000,
+            price2: 3800000,
             description:'The PowerCube Titan is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Titan.jpeg','/product_Img/Titan.jpeg','/product_Img/Titan.jpeg'],
             length:'55in(110cm)',
             width:'55in(110cm)',
             height:'55in(110cm)',
             weight:'55lbs(110kg)',
-            AcCharging:'11hours',
-            solarCharging:'11hours',
-            solarPanels:'12', 
+            AcCharging:'3-4 hours',
+            solarCharging:'3 hours',
+            solarPanels:'8', 
             power:[
                 {
                     device:'Light',
