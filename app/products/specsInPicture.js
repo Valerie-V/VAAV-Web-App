@@ -1,73 +1,13 @@
 'use client'
 import React, { useState } from 'react'
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
-import PowerCube3D from '@/components/powerCube3D';
-
-// Features of the PowerCube, in the order they are numbered on the model.
-// Each has the view the model turns to, and one or more markers placed on
-// its faces (x/y are percentages of that face).
-function getFeatures(product) {
-  const output = Number(product.inverter).toLocaleString();
-  const battery = Number(product.battery).toLocaleString();
-  return [
-    {
-      id: 'switch',
-      title: 'Power switch',
-      text: 'Turns the PowerCube on and off.',
-      view: { angle: -16, tilt: -8 },
-      pins: [{ face: 'front', x: '28%', y: '12%' }],
-    },
-    {
-      id: 'display',
-      title: 'Battery display',
-      text: 'Shows how much charge is left, from 0 to 100%.',
-      view: { angle: -10, tilt: -8 },
-      pins: [{ face: 'front', x: '60%', y: '6.5%' }],
-    },
-    {
-      id: 'lights',
-      title: 'Status lights',
-      text: 'Green, amber and red lights show charging and battery status at a glance.',
-      view: { angle: -16, tilt: -8 },
-      pins: [{ face: 'front', x: '72%', y: '12%' }],
-    },
-    {
-      id: 'ac-output',
-      title: 'AC output socket',
-      text: `230V~ 50Hz. Plug in a TV, fan, lights or laptop, up to ${output}W in total.`,
-      view: { angle: -18, tilt: -50 },
-      pins: [{ face: 'top', x: '60%', y: '22%' }],
-    },
-    {
-      id: 'inputs',
-      title: 'Charging ports',
-      text: 'Connect the AC adapter (220V, up to 1,500W) or the DC input for solar and car charging (13V, 10A max).',
-      view: { angle: -64, tilt: -10 },
-      pins: [{ face: 'right', x: '74%', y: '28%' }],
-    },
-    {
-      id: 'vents',
-      title: 'Cooling vents',
-      text: 'Vents on the top and sides let heat out, so the battery and inverter stay cool.',
-      view: { angle: 48, tilt: -32 },
-      pins: [
-        { face: 'top', x: '21%', y: '50%' },
-        { face: 'left', x: '50%', y: '37%' },
-        { face: 'right', x: '69%', y: '57%' },
-      ],
-    },
-    {
-      id: 'label',
-      title: 'Rating label',
-      text: `Model and ratings: ${battery}Wh battery, ${output}W output.`,
-      view: { angle: 162, tilt: -8 },
-      pins: [{ face: 'back', x: '76%', y: '38%' }],
-    },
-  ];
-}
+import Model3D from '@/components/model3d/model3d';
+import { getModel } from '@/components/model3d/models';
 
 function SpecsInPicture({ product }) {
-  const features = getFeatures(product);
+  // features are numbered on the model in this order; each has the view the
+  // model turns to and markers placed on its faces
+  const features = getModel(product.model3d).features({ ...getModel(product.model3d).defaults, ...product });
   const [activeId, setActiveId] = useState(null);
   const active = features.find(feature => feature.id === activeId) || null;
 
@@ -91,7 +31,9 @@ function SpecsInPicture({ product }) {
     <div className='mt-6' role='tabpanel'>
       <div className='grid gap-6 lg:grid-cols-[1.3fr_1fr]'>
         <div className='stage relative aspect-[4/5] overflow-hidden rounded-3xl sm:aspect-[4/3]'>
-          <PowerCube3D
+          <Model3D
+            model={product.model3d}
+            product={product}
             className='absolute inset-0 text-[8.5px] sm:text-[11px] lg:text-[12px]'
             autoRotate={!active}
             focus={active ? active.view : null}

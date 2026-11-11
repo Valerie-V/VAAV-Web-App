@@ -1,11 +1,10 @@
 # netlify.toml
+# Netlify builds the site with its Next.js runtime, which serves the pages from
+# the .next build output. Do not set NETLIFY_NEXT_PLUGIN_SKIP: it switches the
+# runtime off, and every page then returns Netlify's 404.
 [build]
-  command = "next build"
+  command = "npm run build"
   publish = ".next"
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[build.environment]
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"

@@ -7,8 +7,8 @@ export const initialState = {
         {
             id:'1',
             name:['PowerCube','PowerCube+Solar'],
-            // shows the interactive 3D model first in the product gallery
-            model3d:true,
+            // interactive 3D model (components/model3d/models)
+            model3d:'powercube',
             inverter:'500',
             battery:'960',
             price1: 350000,
@@ -18,7 +18,7 @@ export const initialState = {
             length:'12in(24cm)',
             width:'12in(24cm)',
             height:'12in(24cm)',
-            weight:'12lbs(12kg)',
+            weight:'12 kg',
             AcCharging:'2hours',
             solarCharging:'3hours',
             solarPanels:'1', 
@@ -60,6 +60,8 @@ export const initialState = {
         {
             id:'2',
             name:['PowerCubeX','PowerCubeX+Solar'],
+            // interactive 3D model (components/model3d/models)
+            model3d:'powercube-x',
             inverter:'2000',
             battery:'2400',
             price1: 1200000,
@@ -69,7 +71,7 @@ export const initialState = {
             length:'22in(35cm)',
             width:'22in(35cm)',
             height:'22in(35cm)',
-            weight:'22lbs(35kg)',
+            weight:'35 kg',
             AcCharging:'5hours',
             solarCharging:'6hours',
             solarPanels:'3', 
@@ -121,6 +123,8 @@ export const initialState = {
         {
             id:'3',
             name:['PowerCubeXtra','PowerCubeXtra+Solar'],
+            // interactive 3D model (components/model3d/models)
+            model3d:'powercube-xtra',
             inverter:'3500',
             battery:'5000',
             price1: 2200000,
@@ -130,7 +134,7 @@ export const initialState = {
             length:'45in(90cm)',
             width:'45in(90cm)',
             height:'45in(90cm)',
-            weight:'45lbs(90kg)',
+            weight:'90 kg',
             AcCharging:'9hours',
             solarCharging:'9hours',
             solarPanels:'6', 
@@ -194,6 +198,8 @@ export const initialState = {
         {
             id:'4',
             name:['PowerCubeTitan','PowerCubeTitan+Solar'],
+            // interactive 3D model (components/model3d/models)
+            model3d:'powercube-titan',
             inverter:'5000',
             battery:'5000',
             price1: 2400000,
@@ -203,7 +209,7 @@ export const initialState = {
             length:'55in(110cm)',
             width:'55in(110cm)',
             height:'55in(110cm)',
-            weight:'55lbs(110kg)',
+            weight:'110 kg',
             AcCharging:'3-4 hours',
             solarCharging:'3 hours',
             solarPanels:'8', 
@@ -273,6 +279,8 @@ export const initialState = {
         {
             id:'5',
             name:['PowerCubeTitanX','PowerCubeTitanX+Solar'],
+            // interactive 3D model (components/model3d/models)
+            model3d:'powercube-titanx',
             inverter:'5000',
             battery:'10000',
             price1: 3200000,
@@ -282,7 +290,7 @@ export const initialState = {
             length:'100in(200cm)',
             width:'100in(200cm)',
             height:'100in(200cm)',
-            weight:'100lbs(200kg)',
+            weight:'200 kg',
             AcCharging:'20hours',
             solarCharging:'20hours',
             solarPanels:'12', 

@@ -8,7 +8,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { initialState } from '@/context/reducer';
 import { rangeStats } from '@/lib/format';
 import CountUp from '@/components/countUp';
-import PowerCube3D from '@/components/powerCube3D';
+import Model3D from '@/components/model3d/model3d';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 
 const trust = ['2-year warranty', 'LiFePO4 battery', 'Solar or grid charging'];
@@ -65,7 +65,7 @@ function HomePage() {
             {/* spotlight disc and green glow behind the unit */}
             <div className='pointer-events-none absolute inset-[6%] rounded-full bg-[radial-gradient(circle_at_50%_40%,rgba(255,255,255,0.14),rgba(255,255,255,0.03)_55%,transparent_70%)] ring-1 ring-white/10' aria-hidden='true' />
             <div className='pointer-events-none absolute inset-[14%] rounded-full bg-brand-500/45 blur-[80px]' aria-hidden='true' />
-            <PowerCube3D className='absolute inset-0 text-[8.5px] sm:text-[12px] lg:text-[13px]' />
+            <Model3D model='powercube' className='absolute inset-0 text-[8.5px] sm:text-[12px] lg:text-[13px]' />
             <p className='pointer-events-none absolute inset-x-0 top-[5%] flex items-center justify-center gap-1.5 text-xs font-medium text-white/50'>
               <ThreeSixtyIcon sx={{ fontSize: 16 }} /> Drag to turn
             </p>

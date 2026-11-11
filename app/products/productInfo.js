@@ -9,7 +9,7 @@ import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryCharging
 import { useStateValue } from '@/context/StateProvider'
 import { naira } from '@/lib/format';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
-import PowerCube3D from '@/components/powerCube3D';
+import Model3D from '@/components/model3d/model3d';
 import Info from './info';
 
 function ProductInfo({ product }) {
@@ -44,7 +44,7 @@ function ProductInfo({ product }) {
         <div>
           {activeImage === '3d' ? (
             <div className='stage relative aspect-square overflow-hidden rounded-3xl'>
-              <PowerCube3D className='absolute inset-0 text-[8px] sm:text-[11px] lg:text-[14px]' />
+              <Model3D model={product.model3d} product={product} className='absolute inset-0 text-[8px] sm:text-[11px] lg:text-[14px]' />
               <p className='pointer-events-none absolute inset-x-0 bottom-4 flex items-center justify-center gap-1.5 text-xs font-medium text-graphite-500'>
                 <ThreeSixtyIcon sx={{ fontSize: 16 }} /> Drag to turn
               </p>
