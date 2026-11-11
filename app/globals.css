@@ -2,35 +2,215 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
+  /* Dark theme (default). Values are space-separated RGB. */
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --canvas: 13 16 15;
+    --card: 24 29 27;
+    --surface: 33 39 36;
+    --ink: 244 247 245;
+    --muted: 160 172 166;
+    --line: 255 255 255;
+    --pop: 63 191 106;
+    color-scheme: dark;
+  }
+
+  /* White sections. */
+  .theme-light {
+    --canvas: 255 255 255;
+    --card: 255 255 255;
+    --surface: 243 246 244;
+    --ink: 13 16 15;
+    --muted: 84 95 89;
+    --line: 0 0 0;
+    --pop: 12 101 37;
+    color-scheme: light;
+    background-color: rgb(var(--canvas));
+    color: rgb(var(--ink));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* keeps anchored sections clear of the sticky nav */
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+  }
+
+  ::selection {
+    @apply bg-brand-400 text-graphite-950;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-ink;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  input[type='range'] {
+    accent-color: theme('colors.brand.400');
   }
 }
 
-/* body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
-body{
-  background-color: white;
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+  }
+
+  .section {
+    @apply py-24 md:py-32;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-pop ring-1 ring-inset ring-brand-400/25;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply h-1.5 w-1.5 rounded-full bg-brand-400 shadow-[0_0_8px_2px_rgba(63,191,106,0.6)];
+  }
+
+  .h-display {
+    @apply font-display text-[2.75rem] font-bold leading-[1] tracking-[-0.03em] sm:text-6xl lg:text-[5.25rem];
+  }
+
+  .h-section {
+    @apply font-display text-[2.1rem] font-bold leading-[1.05] tracking-[-0.025em] md:text-5xl;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-300 via-white to-brand-400 bg-[length:200%_auto] bg-clip-text text-transparent animate-shimmer;
+  }
+
+  .theme-light .text-gradient {
+    @apply from-brand-700 via-brand-500 to-brand-700;
+  }
+
+  .lead {
+    @apply text-lg leading-relaxed text-muted;
+  }
+
+  .btn {
+    @apply relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-600 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_10px_30px_-10px_rgba(30,158,76,0.8)] hover:-translate-y-0.5 hover:bg-brand-500 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_16px_40px_-10px_rgba(63,191,106,0.9)] disabled:hover:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply btn bg-line/[0.06] text-ink ring-1 ring-inset ring-line/15 backdrop-blur hover:bg-line/10 hover:ring-line/25;
+  }
+
+  .btn-ghost {
+    @apply btn text-pop hover:bg-line/5;
+  }
+
+  .btn-white {
+    @apply btn bg-white text-graphite-950 hover:-translate-y-0.5 hover:bg-graphite-100;
+  }
+
+  .card {
+    @apply rounded-3xl bg-card ring-1 ring-line/10;
+  }
+
+  .theme-light .card {
+    @apply shadow-[0_1px_2px_rgba(16,24,20,0.04),0_8px_24px_-12px_rgba(16,24,20,0.08)];
+  }
+
+  .card-hover {
+    @apply transition duration-300 hover:-translate-y-1 hover:ring-brand-400/40 hover:shadow-[0_24px_60px_-24px_rgba(30,158,76,0.45)];
+  }
+
+  .glass {
+    @apply bg-graphite-900/60 ring-1 ring-inset ring-white/10 backdrop-blur-xl;
+  }
+
+  /* Light "stage" for product photos, which have white backgrounds. Use with
+     mix-blend-multiply on the image so the photo blends into it. */
+  .stage {
+    @apply bg-[radial-gradient(circle_at_50%_40%,#ffffff_0%,#eef2ef_60%,#dfe6e1_100%)];
+  }
+
+  /* Softens the edges of product photos so they melt into the stage. */
+  .feather {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent), linear-gradient(to bottom, transparent, #000 7%, #000 93%, transparent);
+    mask-composite: intersect;
+  }
+
+  .input {
+    @apply block h-12 w-full rounded-xl border-0 bg-surface px-4 text-ink outline-none ring-1 ring-inset ring-line/10 transition placeholder:text-muted/60 focus:ring-2 focus:ring-brand-400;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink/90;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-line/[0.06] px-2.5 py-1 text-xs font-medium text-muted ring-1 ring-inset ring-line/10;
+  }
+
+  .link {
+    @apply font-semibold text-pop underline decoration-pop/40 underline-offset-4 transition hover:decoration-pop;
+  }
+
+  /* Faint grid behind dark hero areas. */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 100%);
+  }
+
+  /* Green spotlight that follows the pointer (see components/pointerGlow.js). */
+  .glow-card {
+    @apply relative isolate overflow-hidden;
+  }
+
+  .glow-card::before {
+    content: '';
+    @apply pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500;
+    border-radius: inherit;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(63 191 106 / 0.16), transparent 45%);
+  }
+
+  .glow-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Scroll-in animation (see components/reveal.js). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
   }
 }

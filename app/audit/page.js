@@ -1,135 +1,86 @@
 'use client'
-import React from 'react'
-import { useState,useEffect } from 'react'
+import React, { useState } from 'react'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useStateValue } from '@/context/StateProvider'
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import {
-    Stepper,
-    Step,
-    StepLabel,
-    StepContent,
-    Button,
-    Typography,
-  } from "@mui/material";
-  import { Helmet } from "react-helmet";
-  import Auditing from './audit';
-  import Recommend from './recommend';
-  import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import { summarizeAudit } from '@/lib/audit';
+import Modal from '@/components/modal';
+import Footer from '../footer';
+import Auditing from './audit';
+import Recommend from './recommend';
 import GetStarted from './getStarted';
 
+const steps = ['Your appliances', 'Your recommendation'];
 
 function Audit() {
-    const [{audit,products}, dispatch] = useStateValue()
+  const [{ audit, products }] = useStateValue()
+  const { items, dailyEnergy, peakPower } = summarizeAudit(audit);
+  const [activeStep, setActiveStep] = useState(0);
+  const [open, setOpen] = useState(false);
 
-    const [audits, setAudits] = useState([...audit]);
-    // const [myProduct, setMyProduct] = useState(products);
-    const [total, setTotal] = useState(0);
-    const [myPower, setMyPower] = useState(0);
+  const showResults = () => {
+    setActiveStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-   
-
-  
-    const theme = createTheme({
-      palette: {
-        primary: {
-          main: "#0c6525", // Change this to your desired primary color
-        },
-      },
-    });
-  
-    const steps = ["Step 1", "Step 2"];
-
-    const [open, setOpen] = useState(false);
-
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-
-    const handleClose = () => {
-      setOpen(false);
-    };
-
-
-    const getStepContent = (step) => {
-        switch (step) {
-          case 0:
-            return (
-              <Auditing
-                audits={audits}
-                setAudits={setAudits}
-                total={total}
-                setTotal={setTotal}
-                myPower={myPower}
-                setMyPower={setMyPower}
-              />
-            );
-         
-          case 1:
-            return (
-              <Recommend
-                audits={audits}
-                myProduct={products}
-                total={total}
-                setTotal={setTotal}
-                myPower={myPower}
-                setMyPower={setMyPower}
-              />
-            );
-        }
-      };
-    
-      const [activeStep, setActiveStep] = useState(0);
-    
-      const handleNext = () => {
-        
-        setActiveStep((prevStep) => prevStep + 1);
-      };
-    
-      const handleBack = () => {
-        setActiveStep((prevStep) => prevStep - 1);
-      };
   return (
-    <div className="App text-center text-base pt-20">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>Audit</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* Other meta tags */}
-      </Helmet>
-      <ThemeProvider theme={theme}>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {getStepContent(activeStep)}
-          <div>
-            <Button disabled={activeStep === 0} onClick={handleBack} >
-              Back
-            </Button>
-            {activeStep !== steps.length - 1 ? (
-              <Button variant="contained" disabled={activeStep === 1}  className='bg-[#0c6525]' onClick={activeStep === 0 ? handleClickOpen : handleNext}>
-                Next
-              </Button>
-            ) : null}
-          </div>
+    <>
+      <section className='relative isolate overflow-hidden'>
+        <div className='pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_70%_at_50%_0%,rgba(30,158,76,0.28),transparent_70%)]' />
+        <div className='grid-bg pointer-events-none absolute inset-0 -z-10' />
+        <div className='container-x py-16 md:py-20'>
+          <span className='eyebrow'>Free energy audit</span>
+          <h1 className='h-display mt-6 max-w-4xl text-5xl animate-fade-up lg:text-7xl'>Find the right PowerCube <span className='text-gradient'>for your needs</span></h1>
+          <p className='lead mt-5 max-w-2xl'>
+            Add the appliances you want to power and how long you use them each day. We&apos;ll recommend the best-value setup, with or without solar.
+          </p>
+
+          {/* step indicator */}
+          <ol className='mt-10 flex items-center gap-3 text-sm font-medium'>
+            {steps.map((label, index) => (
+              <li key={label} className='flex items-center gap-3'>
+                <span className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition ${index <= activeStep ? 'bg-brand-500 text-white' : 'bg-surface text-muted ring-1 ring-line/15'}`}>
+                  {index + 1}
+                </span>
+                <span className={index === activeStep ? 'text-ink' : 'text-muted'}>{label}</span>
+                {index < steps.length - 1 && <span className='mx-1 h-px w-8 bg-line/15 md:w-16' aria-hidden='true' />}
+              </li>
+            ))}
+          </ol>
         </div>
-      </ThemeProvider>
+      </section>
 
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth= 'sm' sx={{zIndex:20, }}>
-                  <DialogTitle className='text-base md:text-lg' sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'5px',color:'#0c6525',fontWeight:'500', display:'flex',justifyContent:'center'}}>Do you want a copy of the result to be sent to your mail</DialogTitle>
-                      <DialogContent  >
-                       <GetStarted close={handleClose} next={handleNext}/>
+      <section className='container-x pb-20 md:pb-28'>
+        {activeStep === 0 ? (
+          <>
+            <Auditing />
+            <div className='mt-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center'>
+              <p className='text-sm text-muted'>
+                {items.length
+                  ? `${items.length} appliance${items.length === 1 ? '' : 's'} added.`
+                  : 'Add at least one appliance to continue.'}
+              </p>
+              <button type='button' disabled={!items.length} onClick={() => setOpen(true)} className='btn-primary px-7 py-3.5 text-base'>
+                See my recommendation <ArrowForwardIcon sx={{ fontSize: 18 }} />
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <button type='button' onClick={() => setActiveStep(0)} className='btn-ghost -ml-4 mb-6'>
+              <ArrowBackIcon sx={{ fontSize: 18 }} /> Edit appliances
+            </button>
+            <Recommend myProduct={products} total={dailyEnergy} myPower={peakPower} />
+          </>
+        )}
+      </section>
 
-                      </DialogContent>
-                      
-                  </Dialog>
-    </div>
+      <Modal open={open} onClose={() => setOpen(false)} title='Want our team to follow up on your results?' maxWidth='sm'>
+        <GetStarted close={() => setOpen(false)} next={showResults} />
+      </Modal>
+
+      <Footer />
+    </>
   )
 }
 

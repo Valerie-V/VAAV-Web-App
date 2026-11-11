@@ -1,177 +1,104 @@
-import React from 'react'
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import { createMuiTheme, ThemeProvider } from '@mui/material/styles';
+'use client'
+import React, { useState } from 'react'
+import CheckIcon from '@mui/icons-material/Check';
+import SpecsInPicture from './specsInPicture';
 
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-  
-  CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-  
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
 
-function Info({product}) {
-    const [value, setValue] = React.useState(0);
+function SpecGroup({ title, items }) {
+  return (
+    <div>
+      <h4 className='text-sm font-semibold uppercase tracking-wide text-muted'>{title}</h4>
+      <dl className='mt-3 divide-y divide-line/10 rounded-2xl ring-1 ring-line/10'>
+        {items.map(([label, value]) => (
+          <div key={label} className='flex justify-between gap-4 px-4 py-3 text-sm'>
+            <dt className='text-muted'>{label}</dt>
+            <dd className='text-right font-medium'>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  )
+}
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#0c6525', // Override primary color to red
-      },
-      secondary: {
-        main: '#ffff', // Override secondary color to green
-      },
-    },
-  });
+function Info({ product }) {
+  const tabs = ['Overview', 'Specifications', ...(product.model3d ? ['Specs in picture'] : [])];
+  const [tab, setTab] = useState(0);
 
   return (
-    <ThemeProvider theme={theme}>
-    <div className='border-b border-primary text-base '>
-        <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" className='text-primary' indicatorColor="primary" >
-          <Tab label="Description" {...a11yProps(0)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0'  sx={{'@media (max-width:768px)': {
-          fontSize: "11px",  // Adjust font size for smaller screens
-        },}} />
-          <Tab label="Specification" {...a11yProps(1)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0' sx={{ '@media (max-width:600px)': {
-          fontSize: "11px" ,// Adjust font size for smaller screens
-        },}}/>
-          <Tab label="Spec in Pictures" {...a11yProps(2)}  className='text-primary md:text-base text-[11px] font-semibold w-[33.3%] px-0' sx={{ '@media (max-width:600px)': {
-          fontSize: "11px", // Adjust font size for smaller screens
-        },}}/>
-        </Tabs>
-      </Box>
-      <CustomTabPanel value={value} index={0}>
-      <div className=" ">
-        <p className='text-primary text-lg font-bold'>Description :</p>
-        <p>{product.description}</p>
-          <div className="power grid grid-cols-3 md:grid-cols-5 mt-2 place-items-center gap-y-1 md:gap-y-2">
-            {
-              product.power.map(power=>(
+    <div className='mt-10'>
+      <div className='inline-flex max-w-full overflow-x-auto rounded-full bg-surface p-1 ring-1 ring-line/10' role='tablist'>
+        {tabs.map((label, index) => (
+          <button
+            key={label}
+            type='button'
+            role='tab'
+            aria-selected={tab === index}
+            onClick={() => setTab(index)}
+            className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm sm:px-5 font-semibold transition ${tab === index ? 'bg-white text-graphite-950 shadow-sm' : 'text-muted hover:text-ink'}`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
-            <div className='w-fit-content flex flex-col items-center'>
-              <img src={power.img} alt={power.device} className='icon w-[50px] h-[50px]'/>
-              <p className='text-center leading-4'>
-                  <small>{power.device}<br/>
-                  &#40;{power.rating}&#41;</small><br/>
-                  <strong>{power.hours}</strong>
-              </p>
-            </div>
-              ))
-            }
-            
+      {tab === 0 && (
+        <div className='mt-6' role='tabpanel'>
+          <p className='leading-relaxed text-muted'>{product.description}</p>
+
+          <h4 className='mt-8 text-lg font-bold'>What it can power</h4>
+          <p className='text-sm text-muted'>Approximate runtime on a full charge, running one appliance at a time.</p>
+          <div className='mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5'>
+            {product.power.map(power => (
+              <div key={power.device} className='flex flex-col items-center rounded-2xl bg-surface p-4 text-center'>
+                <img src={power.img} alt='' className='h-10 w-10 opacity-90 invert' />
+                <p className='mt-2 text-sm font-medium'>{power.device}</p>
+                <p className='text-xs text-muted'>{power.rating}</p>
+                <p className='mt-1 font-bold text-pop'>{power.hours}</p>
+              </div>
+            ))}
           </div>
-        <div className="border-t border-primary text-base pb-1 mt-2">
-        <p className='text-primary text-lg font-semibold mt-3'>Features :</p>
-        <div className="feature__list grid grid-cols-1 md:grid-cols-2">
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Fast dual charging&#40;AC/Solar&#41;</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Easy to use&#40;plug and play&#41;</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Portable</p>
-          <p className='bg-primary text-center text-white py-1 px-2 rounded m-1'>Automatic switching</p>
+
+          <h4 className='mt-8 text-lg font-bold'>Features</h4>
+          <ul className='mt-3 grid gap-2 sm:grid-cols-2'>
+            {['Fast dual charging (AC / solar)', 'Easy to use (plug and play)', 'Portable', 'Automatic switching'].map(feature => (
+              <li key={feature} className='flex items-center gap-2 text-sm'>
+                <span className='flex h-6 w-6 items-center justify-center rounded-full bg-brand-500/15 text-pop'><CheckIcon sx={{ fontSize: 14 }} /></span>
+                {feature}
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-      </div>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-      <div className="specification__info">
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>Battery</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>Capacity:<br/>
-                    <span>{product.battery}</span></p>
-                  <p>Cell Chemistry:<br/>
-                  <span>BYD (LiFePO4 battery) </span></p>
-                  <p>Cycle life:<br/>
-                  <span>4000 cycles to 70%+ capacity </span></p>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>Ports</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>AC Output:<br/>
-                  <span>230V~ 50Hz, AC </span></p>
-                  <p>AC Input:<br/>
-                  <span>220V, 50Hz, (1500W Max) </span></p>
-                  <p>DC Input:<br/>
-                  <span> 13V, 10A Max, Car Charging</span></p>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>Dimensions</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>Length:<br/>
-                  <span>{product.length} </span></p>
-                  <p>Width:<br/>
-                  <span>{product.width}</span></p>
-                  <p>Height:<br/>
-                  <span>{product.height} </span></p>
-                  <p>Weight:<br/>
-                  <span>{product.weight}</span></p>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>Charging Time(0-100%)</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>AC Adapter:<br/>
-                  <span>{product.AcCharging}</span></p>
-                  <p>Solar Panel:<br/>
-                  <span> {product.solarCharging}</span></p>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>General</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>Warranty:<br/>
-                  <span> 2 Years</span></p>
-                  </div>
-                </div>
-                <div className='mb-5'>
-                  <h3 className='text-lg font-bold'>Solar Panel Combination</h3>
-                  <div className='grid grid-cols-1 gap-y-1 md:grid-cols-3 gap-x-5 md:gap-y-2 mt-2 text-base'>
-                  <p>180 W Panel:<br/>
-                  <span>{product.solarPanels}panels </span></p>
-                  </div>
-                </div>
-            </div>
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={2}>
-        Spec in pictures
-      </CustomTabPanel>
-    </Box>
+      )}
+
+      {tab === 1 && (
+        <div className='mt-6 grid gap-6 md:grid-cols-2' role='tabpanel'>
+          <SpecGroup title='Battery' items={[
+            ['Capacity', `${Number(product.battery).toLocaleString()} Wh`],
+            ['Cell chemistry', 'BYD LiFePO4'],
+            ['Cycle life', '4,000 cycles to 70%+ capacity'],
+          ]} />
+          <SpecGroup title='Ports' items={[
+            ['AC output', '230V~ 50Hz'],
+            ['AC input', '220V, 50Hz (1500W max)'],
+            ['DC input', '13V, 10A max, car charging'],
+          ]} />
+          <SpecGroup title='Charging time (0–100%)' items={[
+            ['AC adapter', product.AcCharging],
+            ['Solar panels', product.solarCharging],
+            ['Solar kit', `${product.solarPanels} × 180 W panels`],
+          ]} />
+          <SpecGroup title='Dimensions & warranty' items={[
+            ['Length', product.length],
+            ['Width', product.width],
+            ['Height', product.height],
+            ['Weight', product.weight],
+            ['Warranty', '2 years'],
+          ]} />
+        </div>
+      )}
+
+      {tab === 2 && <SpecsInPicture product={product} />}
     </div>
-    </ThemeProvider>
   )
 }
 

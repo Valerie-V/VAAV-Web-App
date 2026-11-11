@@ -1,10 +1,14 @@
 export const initialState = {
     audit:[],
     basket:[],
+    // false until the saved basket has been restored from localStorage
+    hydrated:false,
     products: [
         {
             id:'1',
             name:['PowerCube','PowerCube+Solar'],
+            // shows the interactive 3D model first in the product gallery
+            model3d:true,
             inverter:'500',
             battery:'960',
             price1: 350000,
@@ -55,7 +59,7 @@ export const initialState = {
 
         {
             id:'2',
-            name:['PowerCubeX','powerCubeX+Solar'],
+            name:['PowerCubeX','PowerCubeX+Solar'],
             inverter:'2000',
             battery:'2400',
             price1: 1200000,
@@ -351,57 +355,86 @@ export const initialState = {
 
 
 
-export const getBasketTotal = (basket) => {
-    let price = basket?.map((item) => item.price * item.qty);
-    return price.reduce((amount, item) => item + amount, 0);
-  };
+export const getBasketTotal = (basket = []) =>
+  basket.reduce((amount, item) => amount + item.price * item.qty, 0);
+
+export const getBasketCount = (basket = []) =>
+  basket.reduce((count, item) => count + item.qty, 0);
 
 export const reducer = (state, action) => {
     switch (action.type) {
       case 'SET_ITEMS':
-        return { 
+        return {
             ...state,
             basket:action.payload
          };
-      case 'ADD_TO_BASKET':
+      case 'HYDRATE_BASKET':
+        return {
+            ...state,
+            // keep anything added before the saved basket finished loading
+            basket: state.basket.length ? state.basket : action.payload,
+            hydrated: true,
+         };
+      case 'ADD_TO_BASKET': {
         const isItemInBasket = state.basket.some(item => item.name === action.payload.name);
-            if (isItemInBasket){
-            return state;
-            } else
-                return { 
+        if (isItemInBasket) {
+          // adding the same product again increases its quantity
+          return {
+            ...state,
+            basket: state.basket.map(item =>
+              item.name === action.payload.name
+                ? { ...item, qty: item.qty + action.payload.qty }
+                : item
+            )
+          };
+        }
+        return {
             ...state,
             basket:[...state.basket,  action.payload]
          };
-      case 'ADD_TO_AUDIT':
+      }
+      case 'CLEAR_BASKET':
+        return {
+            ...state,
+            basket: []
+         };
+      case 'ADD_TO_AUDIT': {
         const isItemInAudit = state.audit.some(item => item.id === action.payload.id);
-            if (isItemInAudit){
-            return state;
-            } else
-                return { 
+        if (isItemInAudit){
+          return state;
+        }
+        return {
             ...state,
             audit:[...state.audit,  action.payload]
          };
+      }
       case 'REMOVE_FROM_BASKET':
-        return { 
-            
+        return {
             ...state,
             basket:state.basket.filter(item => item.name!== action.payload)
          };
+      case 'UPDATE_AUDIT':
+        return {
+            ...state,
+            audit: state.audit.map(item =>
+              item.id === action.payload.id ? { ...item, ...action.payload } : item
+            )
+         };
       case 'REMOVE_FROM_AUDIT':
-        return { 
-            
+        return {
             ...state,
             audit:state.audit.filter(item => item.id!== action.payload)
          };
-         case 'UPDATE_BASKET_ITEM':
-            const { name, qty } = action.payload;
-            return {
-              ...state,
-              basket: state.basket.map(item =>
-                item.name === name ? { ...item, qty: qty } : item
-              )
-            };
+      case 'UPDATE_BASKET_ITEM': {
+        const { name, qty } = action.payload;
+        return {
+          ...state,
+          basket: state.basket.map(item =>
+            item.name === name ? { ...item, qty: qty } : item
+          )
+        };
+      }
       default:
         return state;
     }
-  }; 
+  };

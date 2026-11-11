@@ -1,194 +1,149 @@
 'use client'
-import React from 'react'
-import { useState,useRef,useEffect } from 'react';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Info from './info';
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
+import React, { useState } from 'react'
 import Link from 'next/link';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
+import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryChargingFullOutlined';
 import { useStateValue } from '@/context/StateProvider'
+import { naira } from '@/lib/format';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
+import PowerCube3D from '@/components/powerCube3D';
+import Info from './info';
 
 function ProductInfo({ product }) {
-  const [{basket}, dispatch] = useStateValue()
-  const addToBasket = () => {
-    //add item to basket
-    dispatch({
-      type:'ADD_TO_BASKET',
-      payload: {
-        name: name,
-        image: product.image[0],
-        price: price,
-        qty: qty, 
-      },
-    })
-  }
-  console.log({basket})
-  console.log(basket)
-  
-  
-
-  const [activeImage, setActiveImage] = useState(0)
-  const[price,setPrice] = useState(product.price1)
-  const[name,setName] = useState(product.name[0])
-  const [focusedButton, setFocusedButton] = useState('alone');
+  const [, dispatch] = useStateValue()
+  // '3d' shows the interactive model; a number shows that photo
+  const [activeImage, setActiveImage] = useState(product.model3d ? '3d' : 0)
+  const [withSolar, setWithSolar] = useState(false)
   const [qty, setQty] = useState(1)
+  const [added, setAdded] = useState(false)
+  const [showRental, setShowRental] = useState(false)
 
-  const [open, setOpen] = useState(false);
+  const name = withSolar ? product.name[1] : product.name[0]
+  const price = withSolar ? product.price2 : product.price1
 
-  const handleClickOpen = () => {
-    setOpen(true);
-    addToBasket()
-  };
-
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
-
-  
-  
-
-  const defaultButtonRef = useRef(null);
-  const anotherButtonRef = useRef(null);
-
-  useEffect(() => {
-  
-    defaultButtonRef.current.focus() 
-    
-  }, []);
-
-  const handleFocus = (buttonId) => {
-    setFocusedButton(buttonId);
-  };
-  
-  const handleAlone = ()=>{
-    handleFocus('alone')
-    setPrice(product.price1)
-  }
-  const handleSolar = ()=>{
-    handleFocus('solar')
-    setPrice(product.price2)
-    setName(product.name[1])
+  const addToBasket = () => {
+    dispatch({
+      type: 'ADD_TO_BASKET',
+      payload: { name, image: product.image[0], price, qty },
+    })
+    setAdded(true)
   }
 
-  
-  const handleAdd = ()=>{
-    setQty(Math.max(qty+1,1))
-   }
-   const handleMinus = ()=>{
-    setQty(Math.max(qty-1,1))
-   }
-
-   
- 
-  
-  
-  const handleImageChange = (newIndex) => {
-    setActiveImage(newIndex);
-  };
-
-  const [anchorEl1, setAnchorEl1] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-  const [anchorEl3, setAnchorEl3] = useState(null);
-
-  const handleClick = (event, anchorElSetter) => {
-    addToBasket()
-    anchorElSetter(event.currentTarget);
-    
-  };
-  
-
-  const handleClose = (anchorElSetter) => {
-    anchorElSetter(null);
-  };
-
-  const open1 = Boolean(anchorEl1);
-  const open2 = Boolean(anchorEl2);
-  const open3 = Boolean(anchorEl3);
-
-  
+  const options = [
+    { id: false, label: 'PowerCube only', sub: naira(product.price1), icon: BatteryChargingFullOutlinedIcon },
+    { id: true, label: `With ${product.solarPanels} solar panel${product.solarPanels === '1' ? '' : 's'}`, sub: naira(product.price2), icon: WbSunnyOutlinedIcon },
+  ]
 
   return (
-     <div className='w-full'>
-      <section className='flex md:flex-row flex-col  mb-2 pb-1 border-b border-primary'>
-        <div className="md:w-[350px]  w-full mr-2">
-          <img src={product.image[activeImage]} alt="" className='w-full h-[270px]'/>
-          <div className="flex">
-            {product.image.map((img,index)=>(
-              <button key={index} className='p-0 bg-none rounded-none focus:opacity-40 border border-primary' onClick={()=>handleImageChange(index)}>
-                <img src={img} alt="" className='w-[35px] h-[35px]:' />
+    <div>
+      <div className='grid gap-8 md:grid-cols-2'>
+        {/* gallery */}
+        <div>
+          {activeImage === '3d' ? (
+            <div className='stage relative aspect-square overflow-hidden rounded-3xl'>
+              <PowerCube3D className='absolute inset-0 text-[8px] sm:text-[11px] lg:text-[14px]' />
+              <p className='pointer-events-none absolute inset-x-0 bottom-4 flex items-center justify-center gap-1.5 text-xs font-medium text-graphite-500'>
+                <ThreeSixtyIcon sx={{ fontSize: 16 }} /> Drag to turn
+              </p>
+            </div>
+          ) : (
+            <div className='stage flex aspect-square items-center justify-center rounded-3xl p-8'>
+              <img src={product.image[activeImage]} alt={product.name[0]} className='max-h-full w-auto object-contain feather mix-blend-multiply' />
+            </div>
+          )}
+          <div className='mt-3 flex gap-3'>
+            {product.model3d && (
+              <button
+                type='button'
+                onClick={() => setActiveImage('3d')}
+                className={`stage flex h-20 w-20 flex-col items-center justify-center gap-0.5 rounded-2xl text-graphite-700 transition ${activeImage === '3d' ? 'ring-2 ring-brand-400' : 'ring-1 ring-line/10 hover:ring-line/25'}`}
+                aria-label='Show 3D view'
+              >
+                <ThreeSixtyIcon />
+                <span className='text-xs font-bold'>3D</span>
+              </button>
+            )}
+            {product.image.map((img, index) => (
+              <button
+                key={index}
+                type='button'
+                onClick={() => setActiveImage(index)}
+                className={`stage flex h-20 w-20 items-center justify-center rounded-2xl p-2 transition ${activeImage === index ? 'ring-2 ring-brand-400' : 'ring-1 ring-line/10 hover:ring-line/25'}`}
+                aria-label={`Show image ${index + 1}`}
+              >
+                <img src={img} alt='' className='max-h-full w-auto object-contain feather mix-blend-multiply' />
               </button>
             ))}
           </div>
         </div>
-        <div className="productInfo__namePrice mt-2">
-          
-          <p className="text-xl text-heading mb-1">
-            <strong>&#x20A6; </strong>
-            <strong>{price.toLocaleString()}</strong>
-          </p>
-          <div className="productInfo__battery">
-          <Button variant="contained" className='focus:opacity-40 bg-[#0c6525]' id='batt1' ref={defaultButtonRef} onClick={handleAlone} sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Alone</Button>
-          <Button variant="contained" className='focus:opacity-40 bg-[#0c6525]' id='batt2' ref={anotherButtonRef}  onClick={handleSolar} sx={{background: '#0c6525',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>With solar</Button>
-           
+
+        {/* purchase panel */}
+        <div className='flex flex-col'>
+          <p className='text-sm font-medium text-muted'>{Number(product.inverter).toLocaleString()} W output · {Number(product.battery).toLocaleString()} Wh battery</p>
+          <h3 className='mt-1 text-3xl font-bold'>{name}</h3>
+          <p className='mt-3 text-3xl font-bold text-pop'>{naira(price * qty)}</p>
+          {qty > 1 && <p className='text-sm text-muted'>{naira(price)} each</p>}
+
+          <fieldset className='mt-6'>
+            <legend className='label'>Choose your setup</legend>
+            <div className='grid gap-3 sm:grid-cols-2'>
+              {options.map(({ id, label, sub, icon: Icon }) => (
+                <button
+                  key={label}
+                  type='button'
+                  aria-pressed={withSolar === id}
+                  onClick={() => { setWithSolar(id); setAdded(false) }}
+                  className={`flex items-center gap-3 rounded-2xl p-4 text-left transition ${withSolar === id ? 'bg-brand-500/10 ring-2 ring-brand-400' : 'ring-1 ring-line/15 hover:ring-line/25'}`}
+                >
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${withSolar === id ? 'bg-brand-500 text-white' : 'bg-surface text-muted'}`}><Icon fontSize='small' /></span>
+                  <span>
+                    <span className='block text-sm font-semibold'>{label}</span>
+                    <span className='block text-sm text-muted'>{sub}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <div className='mt-6 flex flex-wrap items-center gap-3'>
+            <div className='flex items-center rounded-full ring-1 ring-line/15'>
+              <button type='button' onClick={() => { setQty(Math.max(qty - 1, 1)); setAdded(false) }} className='rounded-full p-3 transition hover:bg-surface' aria-label='Decrease quantity'><RemoveIcon fontSize='small' /></button>
+              <span className='w-8 text-center font-semibold' aria-live='polite'>{qty}</span>
+              <button type='button' onClick={() => { setQty(qty + 1); setAdded(false) }} className='rounded-full p-3 transition hover:bg-surface' aria-label='Increase quantity'><AddIcon fontSize='small' /></button>
+            </div>
+            <button type='button' onClick={addToBasket} className='btn-primary flex-1 py-3.5 text-base'>Add to cart</button>
           </div>
-          <div className="flex mt-2">
-          <Button variant="contained"   onClick={handleClickOpen} className='btn1 active:opacity-40 bg-[#0c6525]' sx={{background: '#0c6525',padding:'5px', marginRight: '5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Add to cart</Button>
-          <Dialog open={open} onClose={handleCloseDialog}  maxWidth= 'small' sx={{zIndex:20, }}>
-                  <DialogTitle className='text-base md:text-lg font-bold' sx={{ borderBottom: '1px solid #0c6525', padding: '5px', marginBottom:'10px',color:'#0c6525',fontWeight:'500', display:'flex',justifyContent:'center'}}>Product added to cart successfully</DialogTitle>
-                      <DialogContent  >
-                       <div className='flex  flex-row gap-2 justify-center items-center'>
-                        <button variant="contained" className=' hover:opacity-40 bg-[#0c6525] px-2 py-1 text-white rounded-md' onClick={handleCloseDialog} >Continue Shopping</button>
-                        <Link href='/checkout'>
-                        <button variant="contained" className=' hover:opacity-40 bg-[#0c6525] px-2 py-1 text-white rounded-md' >Go to cart</button>
-                        </Link>
-                       </div>
-                      </DialogContent>
-                      
-                  </Dialog>
-            
-              
-              <Button variant="contained" className='btn2 focus:opacity-30 bg-[#FFA740]' onClick={(e) => handleClick(e, setAnchorEl3)} sx={{background: '#FFA740',padding:'5px','&:hover': {backgroundColor:'#0c6525',opacity:'0.4'}}}>Rent</Button>
-              <Popover
-                open={open3}
-                anchorEl={anchorEl3}
-                onClose={() => handleClose(setAnchorEl3)}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <Alert severity="info">
-                <AlertTitle>Rent</AlertTitle>
-                Price:
-                <small>&#x20A6;</small>
-                 <strong>{product.price}</strong><br/>
-                 Rental coming soon...
-                </Alert>
-              </Popover>
-            
+
+          {added && (
+            <div className='mt-4 flex items-center justify-between gap-3 rounded-2xl bg-brand-500/10 p-4 text-sm ring-1 ring-inset ring-brand-400/25' role='status'>
+              <span className='flex items-center gap-2 font-medium text-pop'><CheckCircleIcon fontSize='small' /> Added to your cart</span>
+              <Link href='/checkout' className='font-semibold text-pop underline underline-offset-4'>View cart</Link>
+            </div>
+          )}
+
+          <div className='mt-6 grid gap-3 border-t border-line/10 pt-6 sm:grid-cols-2'>
+            <Link href={`/book?service=installation&product=${encodeURIComponent(name)}`} className='btn-secondary'>
+              Book installation
+            </Link>
+            <button type='button' onClick={() => setShowRental(!showRental)} className='btn-secondary' aria-expanded={showRental}>
+              Rent instead?
+            </button>
           </div>
-          <div className='flex mb-2  md:w-[60%] w-[50%] justify-center items-center mt-2 bg-black bg-opacity-[0.08] py-2 px-3 rounded-2xl'>
-                  <button onClick={handleMinus} className='text-white bg-primary rounded-full flex justify-center items-center'><RemoveIcon fontSize='medium'/></button>
-                  <p className='md:mx-4 mx-2 '>{qty}</p>
-                  <button onClick={handleAdd} className='text-white bg-primary rounded-full flex justify-center items-center'><AddIcon fontSize='medium'/></button>
-               </div>
+          {showRental && (
+            <p className='mt-3 rounded-2xl bg-brand-500/10 p-4 text-sm text-ink ring-1 ring-inset ring-brand-400/25'>
+              Rental is coming soon.{' '}
+              <Link href={`/book?service=consultation&product=${encodeURIComponent(product.name[0])}&notes=${encodeURIComponent("I'm interested in renting this PowerCube.")}`} className='link'>
+                Ask us about renting the {product.name[0]}
+              </Link>
+            </p>
+          )}
         </div>
-      </section>
-      <Info product={product}/>
-      
-      
-      
+      </div>
+
+      <Info product={product} />
     </div>
   )
 }

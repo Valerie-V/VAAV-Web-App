@@ -1,68 +1,50 @@
 'use client'
 import React from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Button } from '@mui/material';
 import { useStateValue } from '@/context/StateProvider';
-import { useState,useEffect } from 'react';
+import { naira } from '@/lib/format';
 
 function CheckoutProduct({item}) {
-  const [{basket}, dispatch] = useStateValue()
-  const removeFromBasket= () => {
-    dispatch({
-        type: 'REMOVE_FROM_BASKET',
-        payload: item.name
-        
-    })
+  const [, dispatch] = useStateValue()
+
+  const removeFromBasket = () => {
+    dispatch({ type: 'REMOVE_FROM_BASKET', payload: item.name })
   }
-  const updateBasketItem = (itemName, newQty) => {
+
+  const setQty = (qty) => {
     dispatch({
       type: 'UPDATE_BASKET_ITEM',
-      payload: {
-        name: itemName,
-        qty: newQty
-      }
+      payload: { name: item.name, qty: Math.max(qty, 1) }
     });
   };
-  const [qty, setQty] = useState(item.qty)
-  
-  const handleAdd = ()=>{
-    setQty(Math.max(qty+1,1))
-   }
-   const handleMinus = ()=>{
-    setQty(Math.max(qty-1,1))
-   }
 
-   useEffect(()=>{
-    updateBasketItem(item.name,qty)
-   },[qty])
-
-  
-    
   return (
-    <section className='w-full border-b border-primary border-opacity-[0.4] pb-3 mt-2'>
-        <div className=' flex justify-between '>
-          <div className='left flex flex-col md:flex-row gap-2'>
-            <img src={item.image} alt={item.name} className='object-contain w-[90px] h-[90px] md:w-[180px] md:h-[180px]'/>
-            <div className='flex flex-col  self-end'>
-              <h3 className='text-primary text-base md:text-2xl font-bold'>{item.name}</h3>
-              <p className='md:text-xl text-sm font-semibold text-heading'> &#x20A6; {item.price.toLocaleString()}</p>
-            </div>
+    <div className='flex gap-4 p-5 md:gap-6 md:p-6'>
+      <div className='flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl stage p-2 md:h-32 md:w-32'>
+        <img src={item.image} alt={item.name} className='max-h-full w-auto object-contain feather mix-blend-multiply'/>
+      </div>
+      <div className='flex flex-1 flex-col justify-between gap-3'>
+        <div className='flex items-start justify-between gap-4'>
+          <div>
+            <h3 className='text-lg font-bold'>{item.name}</h3>
+            <p className='text-sm text-muted'>{naira(item.price)} each</p>
           </div>
-            <div className='right flex flex-col justify-between '>
-                <button className='text-primary text-sm'  onClick={removeFromBasket}>
-                  <DeleteIcon fontSize='small'/>
-                  Remove
-                </button>
-                <div className='flex  justify-center items-center bg-black bg-opacity-[0.08] py-2 px-3 rounded-2xl'>
-                  <button onClick={handleMinus} className='text-white bg-primary rounded-full flex justify-center items-center'><RemoveIcon fontSize='small'/></button>
-                  <p className='md:mx-2 mx-1'>{qty}</p>
-                  <button onClick={handleAdd} className='text-white bg-primary rounded-full flex justify-center items-center'><AddIcon fontSize='small'/></button>
-                </div>
-            </div>
+          <p className='text-lg font-bold'>{naira(item.price * item.qty)}</p>
         </div>
-    </section>
+        <div className='flex items-center justify-between'>
+          <div className='flex items-center rounded-full ring-1 ring-line/15'>
+            <button type='button' onClick={() => setQty(item.qty - 1)} aria-label='Decrease quantity' className='rounded-full p-2 transition hover:bg-surface'><RemoveIcon fontSize='small'/></button>
+            <span className='w-8 text-center text-sm font-semibold'>{item.qty}</span>
+            <button type='button' onClick={() => setQty(item.qty + 1)} aria-label='Increase quantity' className='rounded-full p-2 transition hover:bg-surface'><AddIcon fontSize='small'/></button>
+          </div>
+          <button type='button' className='flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium text-muted transition hover:bg-red-500/10 hover:text-red-400' onClick={removeFromBasket}>
+            <DeleteOutlineIcon fontSize='small'/> Remove
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 

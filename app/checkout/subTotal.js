@@ -1,158 +1,159 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
-import Link from "next/link";
-import PaystackPop from "@paystack/inline-js";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
+import { naira } from "@/lib/format";
 import { getBasketTotal } from "@/context/reducer";
 import { useStateValue } from "@/context/StateProvider";
+import { submitNetlifyForm } from "@/lib/netlifyForms";
 
-function SubTotal() {
+const NIGERIAN_STATES = [
+  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno',
+  'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'FCT (Abuja)', 'Gombe',
+  'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos',
+  'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto',
+  'Taraba', 'Yobe', 'Zamfara',
+];
+
+function SubTotal({ onPaid }) {
   const [{ basket }, dispatch] = useStateValue();
-  const subtotal = getBasketTotal(basket).toLocaleString();
-  const [showPopup, setShowPopup] = useState(false);
+  const total = getBasketTotal(basket);
+  const [paying, setPaying] = useState(false);
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phone: "",
+    state: "",
+    address: "",
   });
 
-  function handleCheckout() {
+  const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
+
+  async function handleCheckout() {
     if (basket.length === 0) {
-      alert(
-        "Your cart is empty. Please add items to your cart before checking out."
-      );
+      setMessage("Your cart is empty. Please add items to your cart before checking out.");
       return;
     }
-    console.log("Checkout")
+    setMessage("");
+
+    // Snapshot the order now, since the basket is cleared after payment.
+    const items = basket.map(({ name, price, qty }) => ({ name, price, qty }));
+    const itemsText = items.map(i => `${i.name} x${i.qty} (₦${(i.price * i.qty).toLocaleString()})`).join('\n');
+    const deliveryAddress = `${formData.address}, ${formData.state}`;
+
+    // Loaded on demand: the Paystack library needs `window`, so importing it at
+    // the top of the file crashes server rendering of the checkout page.
+    let PaystackPop;
+    try {
+      ({ default: PaystackPop } = await import("@paystack/inline-js"));
+    } catch (err) {
+      console.error(err);
+      setMessage("Couldn't load the payment window. Check your connection and try again.");
+      return;
+    }
     const paystack = new PaystackPop();
-    console.log(paystack);
     paystack.newTransaction({
       key: process.env.NEXT_PUBLIC_PAYMENT_KEY,
       email: formData.email,
-      amount: getBasketTotal(basket) * 100,
+      phone: formData.phone,
+      amount: total * 100,
       currency: "NGN",
+      // Shown on the transaction in the Paystack dashboard.
+      metadata: {
+        custom_fields: [
+          { display_name: "Full name", variable_name: "full_name", value: formData.fullName },
+          { display_name: "Phone", variable_name: "phone", value: formData.phone },
+          { display_name: "Delivery address", variable_name: "delivery_address", value: deliveryAddress },
+          { display_name: "Items", variable_name: "items", value: itemsText },
+        ],
+      },
       onSuccess: (response) => {
-        alert(`Payment complete! Reference: ${response.reference}`);
+        // Record the order for the team. A failure here must not block the
+        // customer, who has already paid; Paystack still holds the record.
+        submitNetlifyForm("order", {
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          state: formData.state,
+          delivery_address: formData.address,
+          items: itemsText,
+          total,
+          paystack_reference: response.reference,
+        }).catch((err) => console.error("Could not record order:", err));
+
+        dispatch({ type: "CLEAR_BASKET" });
+        onPaid({ reference: response.reference, items, total, phone: formData.phone });
       },
       onCancel: () => {
-        alert("Payment cancelled");
+        setMessage("Payment cancelled. Your cart has been kept, so you can try again.");
       },
     });
   }
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    setShowPopup(false);
-    handleCheckout();
+    setPaying(true);
+    try {
+      await handleCheckout();
+    } finally {
+      setPaying(false);
+    }
   };
 
   return (
-    <div className="md:w-[280px] w-full h-auto p-2 z-[1] rounded-xl shadow-2xl">
-      <h1 className="border-b border-primary border-opacity-[0.4] text-xl py-2">
-        Cart summary
-      </h1>
-      <div className="border-b border-primary border-opacity-[0.4] flex text-lg justify-between py-2 mb-4">
-        <p>Subtotal</p>
-        <p>&#x20A6;{subtotal}</p>
-      </div>
-      <Link href="" className="mt-2">
-        <Button
-          variant="contained"
-          className="bg-primary"
-          sx={{
-            background: "#0c6525",
-            width: "100%",
-            padding: "5px",
-            marginRight: "5px",
-            "&:hover": { backgroundColor: "#0c6525", opacity: "0.4" },
-          }}
-          onClick={() => setShowPopup(true)}
-        >
-          Checkout
-        </Button>
-      </Link>
-
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <form onSubmit={handleFormSubmit} className="popup-form">
-              <h2>Complete Your Payment</h2>
-              <label>
-                Full Name
-                <input
-                  type="text"
-                  value={formData.fullName}
-                  onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
-                  }
-                  required
-                />
-              </label>
-              <label>
-                Email Address
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
+    <aside className="card p-6 lg:sticky lg:top-24">
+      <h2 className="text-lg font-bold">Order summary</h2>
+      <dl className="mt-4 space-y-2 text-sm">
+        <div className="flex justify-between">
+          <dt className="text-muted">Subtotal</dt>
+          <dd className="font-medium">{naira(total)}</dd>
         </div>
-      )}
+        <div className="flex justify-between">
+          <dt className="text-muted">Delivery & installation</dt>
+          <dd className="text-muted">Arranged after payment</dd>
+        </div>
+        <div className="flex justify-between border-t border-line/10 pt-3 text-lg font-bold">
+          <dt>Total</dt>
+          <dd>{naira(total)}</dd>
+        </div>
+      </dl>
 
-      <style jsx>{`
-        .popup-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.5);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
+      <form onSubmit={handleFormSubmit} className="mt-6 flex flex-col gap-4 border-t border-line/10 pt-6">
+        <h3 className="flex items-center gap-2 font-semibold">
+          <LocalShippingOutlinedIcon fontSize="small" className="text-pop" /> Delivery details
+        </h3>
+        <div>
+          <label htmlFor="co-name" className="label">Full name</label>
+          <input id="co-name" type="text" autoComplete="name" value={formData.fullName} onChange={update("fullName")} required className="input" />
+        </div>
+        <div>
+          <label htmlFor="co-email" className="label">Email</label>
+          <input id="co-email" type="email" autoComplete="email" value={formData.email} onChange={update("email")} required className="input" />
+        </div>
+        <div>
+          <label htmlFor="co-phone" className="label">Phone number</label>
+          <input id="co-phone" type="tel" autoComplete="tel" value={formData.phone} onChange={update("phone")} required className="input" />
+        </div>
+        <div>
+          <label htmlFor="co-state" className="label">State</label>
+          <select id="co-state" value={formData.state} onChange={update("state")} required className="input">
+            <option value="" disabled>Select your state</option>
+            {NIGERIAN_STATES.map((s) => <option key={s}>{s}</option>)}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="co-address" className="label">Delivery address</label>
+          <input id="co-address" type="text" autoComplete="street-address" value={formData.address} onChange={update("address")} required className="input" />
+        </div>
 
-        .popup {
-          background: white;
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-          max-width: 400px;
-          width: 100%;
-        }
+        {message && <p className="rounded-xl bg-red-500/10 p-3 text-sm text-red-300" role="alert">{message}</p>}
 
-        .popup-form {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .popup-form label {
-          margin-bottom: 10px;
-        }
-
-        .popup-form input {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-
-        .popup-form button {
-          padding: 10px;
-          background-color: #0c6525;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-      `}</style>
-    </div>
+        <button type="submit" disabled={paying} className="btn-primary mt-2 w-full py-3.5 text-base">
+          <LockOutlinedIcon sx={{ fontSize: 18 }} /> {paying ? "Opening payment…" : `Pay ${naira(total)}`}
+        </button>
+        <p className="text-center text-xs text-muted">Secure payment by Paystack</p>
+      </form>
+    </aside>
   );
 }
 

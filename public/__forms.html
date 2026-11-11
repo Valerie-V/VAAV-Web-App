@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Form definitions</title>
+  </head>
+  <body>
+    <!--
+      Netlify reads these at deploy time to register the site's forms.
+      The real forms live in the React app and post here via lib/netlifyForms.js.
+      Keep the field names in sync with the components that submit them.
+    -->
+
+    <!-- app/book/bookingForm.js -->
+    <form name="booking" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="booking" />
+      <input name="bot-field" />
+      <input name="service" />
+      <input name="consultation_mode" />
+      <input name="product" />
+      <input name="full_name" />
+      <input name="phone" />
+      <input name="email" />
+      <input name="state" />
+      <input name="address" />
+      <input name="preferred_date" />
+      <input name="preferred_time" />
+      <textarea name="notes"></textarea>
+      <textarea name="audit_summary"></textarea>
+    </form>
+
+    <!-- app/audit/getStarted.js -->
+    <form name="audit-lead" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="audit-lead" />
+      <input name="bot-field" />
+      <input name="first_name" />
+      <input name="last_name" />
+      <input name="email" />
+      <input name="phone" />
+      <textarea name="heard_about_us"></textarea>
+      <textarea name="audit_summary"></textarea>
+    </form>
+
+    <!-- app/checkout/subTotal.js -->
+    <form name="order" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="order" />
+      <input name="bot-field" />
+      <input name="full_name" />
+      <input name="email" />
+      <input name="phone" />
+      <input name="state" />
+      <input name="delivery_address" />
+      <textarea name="items"></textarea>
+      <input name="total" />
+      <input name="paystack_reference" />
+    </form>
+  </body>
+</html>
