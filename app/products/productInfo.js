@@ -8,6 +8,7 @@ import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryChargingFullOutlined';
 import { useStateValue } from '@/context/StateProvider'
 import { naira } from '@/lib/format';
+import { solarKitText } from '@/lib/solar';
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import Model3D from '@/components/model3d/model3d';
 import Info from './info';
@@ -34,7 +35,7 @@ function ProductInfo({ product }) {
 
   const options = [
     { id: false, label: 'PowerCube only', sub: naira(product.price1), icon: BatteryChargingFullOutlinedIcon },
-    { id: true, label: `With ${product.solarPanels} solar panel${product.solarPanels === '1' ? '' : 's'}`, sub: naira(product.price2), icon: WbSunnyOutlinedIcon },
+    { id: true, label: `With ${solarKitText(product)}`, sub: naira(product.price2), icon: WbSunnyOutlinedIcon },
   ]
 
   return (

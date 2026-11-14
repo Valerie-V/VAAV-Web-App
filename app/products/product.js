@@ -1,13 +1,14 @@
 import React from 'react'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { naira } from '@/lib/format';
+import { solarKit } from '@/lib/solar';
 
 // Product card in the products grid. Clicking it opens the details modal.
 function Product({ product, onOpen }) {
   return (
     <button type='button' onClick={onOpen} className='glow-card card card-hover group flex h-full w-full flex-col overflow-hidden p-2 text-left'>
       <div className='stage relative flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-[1.4rem] p-8'>
-        <span className='absolute left-4 top-4 rounded-full bg-graphite-950 px-3 py-1 text-xs font-semibold text-white'>{product.solarPanels} panel solar kit</span>
+        <span className='absolute left-4 top-4 rounded-full bg-graphite-950 px-3 py-1 text-xs font-semibold text-white'>{solarKit(product).panels} × {solarKit(product).panelWatts} W solar kit</span>
         <img className='max-h-full w-auto object-contain feather mix-blend-multiply transition duration-700 group-hover:scale-110' src={product.image[0]} alt={product.name[0]} />
       </div>
       <div className='flex w-full flex-1 flex-col p-5'>

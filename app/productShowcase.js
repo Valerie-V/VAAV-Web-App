@@ -7,6 +7,8 @@ import { initialState } from '@/context/reducer';
 import SectionHeading from '@/components/sectionHeading';
 import Reveal from '@/components/reveal';
 import { naira } from '@/lib/format';
+import { COMPONENTS } from '@/lib/customSystem';
+import { customFromPrice } from './products/customCard';
 
 // "Meet the range" rail on the home page (white section). Each card opens
 // that product on the products page.
@@ -78,6 +80,35 @@ function ProductShowcase() {
             </Link>
           </Reveal>
         ))}
+        <Reveal delay={products.length * 80} className='shrink-0 snap-start'>
+          <Link
+            href='/custom'
+            className='group flex h-full w-[82vw] flex-col overflow-hidden rounded-[2rem] bg-graphite-950 text-white transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_80px_-30px_rgba(12,101,37,0.6)] sm:w-[380px]'
+          >
+            <div className='stage relative m-2 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[1.6rem] p-8'>
+              <span className='absolute left-4 top-4 rounded-full bg-graphite-950 px-3 py-1 font-display text-xs font-semibold text-white'>0{products.length + 1}</span>
+              <span className='absolute right-4 top-4 rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white'>Custom</span>
+              <img src='/illustrations/custom-system.svg' alt='' className='max-h-full w-auto object-contain mix-blend-multiply transition duration-700 group-hover:scale-110' />
+            </div>
+            <div className='flex flex-1 flex-col p-6 pt-4'>
+              <h3 className='text-2xl font-bold text-white'>Build your own system</h3>
+              <div className='mt-3 flex flex-wrap gap-1.5'>
+                <span className='chip bg-white/10 text-white/80 ring-white/10'>{COMPONENTS.battery.wattHours / 1000} kWh batteries</span>
+                <span className='chip bg-white/10 text-white/80 ring-white/10'>{COMPONENTS.inverter.kva} kVA inverters</span>
+                <span className='chip bg-white/10 text-white/80 ring-white/10'>{COMPONENTS.panel.watts} W panels</span>
+              </div>
+              <div className='mt-6 flex items-end justify-between gap-4'>
+                <div>
+                  <p className='text-xs uppercase tracking-wider text-white/50'>From</p>
+                  <p className='font-display text-2xl font-bold text-brand-300'>{naira(customFromPrice)}</p>
+                </div>
+                <span className='flex h-11 w-11 items-center justify-center rounded-full bg-white/10 transition duration-300 group-hover:bg-brand-500'>
+                  <ArrowForwardIcon fontSize='small' className='transition group-hover:-rotate-45' />
+                </span>
+              </div>
+            </div>
+          </Link>
+        </Reveal>
       </div>
     </section>
   )

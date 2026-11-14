@@ -64,8 +64,8 @@ export const initialState = {
             model3d:'powercube-x',
             inverter:'2000',
             battery:'2400',
-            price1: 1200000,
-            price2: 1600000,
+            price1: 950000,
+            price2: 1350000,
             description:'The PowerCube X, a portable Powerstattion with battery capacity of 2400Wh and output Power of 2000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 12 hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Powercube-iso.jpeg','/product_Img/Powercube-front.jpeg', '/product_Img/Powercube-iso.jpeg'],
             length:'22in(35cm)',
@@ -127,8 +127,8 @@ export const initialState = {
             model3d:'powercube-xtra',
             inverter:'3500',
             battery:'5000',
-            price1: 2200000,
-            price2: 2800000,
+            price1: 1600000,
+            price2: 2200000,
             description:'The PowerCube Xtra is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 3500W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Xtra.png','/product_Img/Xtra-iso.jpeg','/product_Img/Xtra.png'],
             length:'45in(90cm)',
@@ -137,7 +137,8 @@ export const initialState = {
             weight:'90 kg',
             AcCharging:'9hours',
             solarCharging:'9hours',
-            solarPanels:'6', 
+            // built-in MPPT charger: solar kit sized from the battery (lib/solar.js)
+            mppt:true,
             power:[
                 {
                     device:'Light',
@@ -202,8 +203,8 @@ export const initialState = {
             model3d:'powercube-titan',
             inverter:'5000',
             battery:'5000',
-            price1: 2400000,
-            price2: 3200000,
+            price1: 1800000,
+            price2: 2600000,
             description:'The PowerCube Titan is a portable Powerstattion with battery capacity of over 5000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Titan.jpeg','/product_Img/Titan.jpeg','/product_Img/Titan.jpeg'],
             length:'55in(110cm)',
@@ -212,7 +213,8 @@ export const initialState = {
             weight:'110 kg',
             AcCharging:'3-4 hours',
             solarCharging:'3 hours',
-            solarPanels:'8', 
+            // built-in MPPT charger: solar kit sized from the battery (lib/solar.js)
+            mppt:true,
             power:[
                 {
                     device:'Light',
@@ -283,8 +285,8 @@ export const initialState = {
             model3d:'powercube-titanx',
             inverter:'5000',
             battery:'10000',
-            price1: 3200000,
-            price2: 4000000,
+            price1: 2200000,
+            price2: 3000000,
             description:'The PowerCube TitanX is a portable Powerstattion with battery capacity of over 10000Wh and output Power up to 5000W. Longer battery life that supports your daily needs. The power station can power your homes, shops and even support you for up to 18hours during blackouts. Charge quickly with Solar or AC (Nepa)',
             image:['/product_Img/Titan-old.jpeg','/product_Img/Titan-old.jpeg','/product_Img/Titan-old.jpeg'],
             length:'100in(200cm)',
@@ -293,7 +295,8 @@ export const initialState = {
             weight:'200 kg',
             AcCharging:'20hours',
             solarCharging:'20hours',
-            solarPanels:'12', 
+            // built-in MPPT charger: solar kit sized from the battery (lib/solar.js)
+            mppt:true,
             power:[
                 {
                     device:'Light',

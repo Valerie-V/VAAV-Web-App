@@ -1,3 +1,4 @@
+import { solarKitText } from '@/lib/solar';
 import React from 'react'
 import Link from 'next/link'
 import SectionHeading from '@/components/sectionHeading';
@@ -8,7 +9,7 @@ const rows = [
   { label: 'Battery capacity', value: p => `${Number(p.battery).toLocaleString()} Wh` },
   { label: 'AC charging (0–100%)', value: p => p.AcCharging },
   { label: 'Solar charging (0–100%)', value: p => p.solarCharging },
-  { label: '180 W panels in solar kit', value: p => p.solarPanels },
+  { label: 'Solar kit', value: p => solarKitText(p) },
   { label: 'Price', value: p => <span className='font-bold text-pop'>{naira(p.price1)}</span> },
   { label: 'Price with solar', value: p => <span className='font-bold text-pop'>{naira(p.price2)}</span> },
 ];

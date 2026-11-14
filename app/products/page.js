@@ -34,6 +34,7 @@ export default function Products() {
         <Suspense fallback={<div className='container-x py-20 text-center text-muted'>Loading products…</div>}>
           <ProductsView />
         </Suspense>
+
       </main>
       <Footer />
     </>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import CheckIcon from '@mui/icons-material/Check';
 import SpecsInPicture from './specsInPicture';
+import { solarKitText } from '@/lib/solar';
 
 
 function SpecGroup({ title, items }) {
@@ -60,7 +61,7 @@ function Info({ product }) {
 
           <h4 className='mt-8 text-lg font-bold'>Features</h4>
           <ul className='mt-3 grid gap-2 sm:grid-cols-2'>
-            {['Fast dual charging (AC / solar)', 'Easy to use (plug and play)', 'Portable', 'Automatic switching'].map(feature => (
+            {['Fast dual charging (AC / solar)', ...(product.mppt ? ['Built-in MPPT solar charger'] : []), 'Easy to use (plug and play)', 'Portable', 'Automatic switching'].map(feature => (
               <li key={feature} className='flex items-center gap-2 text-sm'>
                 <span className='flex h-6 w-6 items-center justify-center rounded-full bg-brand-500/15 text-pop'><CheckIcon sx={{ fontSize: 14 }} /></span>
                 {feature}
@@ -85,7 +86,8 @@ function Info({ product }) {
           <SpecGroup title='Charging time (0–100%)' items={[
             ['AC adapter', product.AcCharging],
             ['Solar panels', product.solarCharging],
-            ['Solar kit', `${product.solarPanels} × 180 W panels`],
+            ['Solar kit', solarKitText(product)],
+            ...(product.mppt ? [['Solar charger', 'Built-in MPPT, takes 500 W+ panels']] : []),
           ]} />
           <SpecGroup title='Dimensions & warranty' items={[
             ['Length', product.length],

@@ -11,6 +11,7 @@ const columns = [
     links: [
       { href: '/products', label: 'All products' },
       { href: '/products#compare', label: 'Compare models' },
+      { href: '/custom', label: 'Build your own system' },
       { href: '/checkout', label: 'Cart' },
     ],
   },

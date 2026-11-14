@@ -8,6 +8,7 @@ import WbSunnyRoundedIcon from '@mui/icons-material/WbSunnyRounded';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import { initialState } from '@/context/reducer';
 import { solarYield, SOLAR_ASSUMPTIONS } from '@/lib/audit';
+import { solarKitText } from '@/lib/solar';
 import SectionHeading from '@/components/sectionHeading';
 
 // An illustrative day for a typical home on a PowerCubeXtra + solar bundle.
@@ -251,7 +252,7 @@ function SolarDay() {
 
         <div className='mt-8 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center'>
           <p className='max-w-2xl text-sm text-muted'>
-            Illustrative example: {PRODUCT.name[1]} ({Number(capacity).toLocaleString()} Wh battery, {PRODUCT.solarPanels} × {SOLAR_ASSUMPTIONS.panelWatts} W panels,
+            Illustrative example: {PRODUCT.name[1]} ({Number(capacity).toLocaleString()} Wh battery, {solarKitText(PRODUCT)},
             about {daily.toLocaleString()} Wh of solar a day at {SOLAR_ASSUMPTIONS.peakSunHours} peak sun hours) for a home using about 3,800 Wh a day.
             Real results depend on weather, panel placement and how you use power.
           </p>

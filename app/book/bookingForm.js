@@ -33,6 +33,7 @@ const NIGERIAN_STATES = [
 
 const NOT_SURE = 'Not sure yet';
 const OTHER_SYSTEM = 'Another brand / existing system';
+const CUSTOM_SYSTEM = 'Custom system';
 
 function tomorrow() {
   const d = new Date();
@@ -75,7 +76,7 @@ function BookingForm() {
   const searchParams = useSearchParams();
 
   const productOptions = useMemo(
-    () => [NOT_SURE, ...products.flatMap(p => p.name), OTHER_SYSTEM],
+    () => [NOT_SURE, ...products.flatMap(p => p.name), CUSTOM_SYSTEM, OTHER_SYSTEM],
     [products]
   );
 

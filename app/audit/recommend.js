@@ -3,34 +3,72 @@ import React from 'react'
 import Link from 'next/link';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { recommendSetup, SOLAR_ASSUMPTIONS } from '@/lib/audit';
+import { CUSTOM_ASSUMPTIONS, customSystemText, inverterWatts, panelYield } from '@/lib/customSystem';
 import { naira, wattHours as wh } from '@/lib/format';
+import CoverageBar from '@/components/coverageBar';
 
-const bookHref = (service, product) => {
+const bookHref = (service, product, notes) => {
   const params = new URLSearchParams({ service });
   if (product) params.set('product', product);
+  if (notes) params.set('notes', notes);
   return `/book?${params.toString()}`;
 };
 
-// Stacked bar: battery + solar supply against the day's energy need.
-function CoverageBar({ option, need }) {
-  const scale = Math.max(option.dailyCapacity, need);
-  const batteryPct = (option.battery / scale) * 100;
-  const solarPct = (option.solarYield / scale) * 100;
-  const needPct = (need / scale) * 100;
+// Shown when the load is bigger than any PowerCube: a system built from
+// separate batteries, inverters and panels.
+function CustomRecommendation({ system, need, peakPower }) {
+  const customiseHref = `/custom?${new URLSearchParams({ load: peakPower, daily: need }).toString()}`;
+  const notes = `Custom system: ${customSystemText(system.counts)} (${naira(system.price)}). Total load: ${peakPower.toLocaleString()} W. Daily use: ${need.toLocaleString()} Wh.`;
+  const kw = (w) => `${(w / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} kW`;
 
   return (
-    <div>
-      <div className='relative flex h-4 w-full overflow-hidden rounded-full bg-surface ring-1 ring-inset ring-line/10'>
-        <div className='h-full bg-brand-600' style={{ width: `${batteryPct}%` }} />
-        {option.solarYield > 0 && <div className='h-full bg-brand-300' style={{ width: `${solarPct}%` }} />}
-        <div className='absolute top-0 h-full border-r-2 border-dashed border-ink' style={{ left: `${needPct}%` }} aria-hidden='true' />
+    <div className='grid gap-6 lg:grid-cols-[1.2fr_1fr]'>
+      <div className='card overflow-hidden'>
+        <div className='grid md:grid-cols-[1fr_1.2fr]'>
+          <div className='stage flex items-center justify-center p-8'>
+            <img src='/illustrations/custom-system.svg' alt='' className='max-h-48 w-auto mix-blend-multiply' />
+          </div>
+          <div className='p-6 md:p-8'>
+            <span className='eyebrow'><AutoAwesomeIcon sx={{ fontSize: 14 }} /> Custom system</span>
+            <h2 className='mt-4 text-3xl font-bold'>A system built for your load</h2>
+            <p className='mt-2 text-3xl font-bold text-pop'>{naira(system.price)}</p>
+            <p className='mt-4 leading-relaxed text-muted'>
+              Your appliances draw {peakPower.toLocaleString()} W and use about {wh(need)} a day, more than our largest PowerCube
+              can handle. This system gives you {kw(system.output)} of output, {wh(system.battery)} of storage and about{' '}
+              <b className='text-ink'>{wh(system.solarYield)}</b> a day from solar.
+            </p>
+          </div>
+        </div>
+        <div className='border-t border-line/10 p-6 md:p-8'>
+          <ul className='divide-y divide-line/10 rounded-2xl ring-1 ring-line/10'>
+            {system.lines.map(line => (
+              <li key={line.id} className='flex items-center justify-between gap-4 px-4 py-3 text-sm'>
+                <span><b className='text-ink'>{line.qty} ×</b> {line.name}</span>
+                <span className='font-medium tabular-nums'>{naira(line.subtotal)}</span>
+              </li>
+            ))}
+          </ul>
+          <div className='mt-6'>
+            <CoverageBar option={system} need={need} />
+          </div>
+          <div className='mt-6 flex flex-wrap gap-3'>
+            <Link href={customiseHref} className='btn-primary'>Customise this system</Link>
+            <Link href={bookHref('consultation', 'Custom system', notes)} className='btn-secondary'>Book a consultation</Link>
+          </div>
+        </div>
       </div>
-      <div className='mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted'>
-        <span className='flex items-center gap-1.5'><span className='h-2.5 w-2.5 rounded-full bg-brand-600' />Battery {wh(option.battery)}</span>
-        {option.solarYield > 0 && (
-          <span className='flex items-center gap-1.5'><span className='h-2.5 w-2.5 rounded-full bg-brand-300' />Solar ≈ {wh(option.solarYield)}/day</span>
-        )}
-        <span className='flex items-center gap-1.5'><span className='h-3 border-r-2 border-dashed border-ink' />Your use {wh(need)}/day</span>
+
+      <div className='rounded-3xl bg-surface p-6 text-sm leading-relaxed text-muted ring-1 ring-line/10 lg:self-start'>
+        <p className='font-semibold text-ink'>How we worked this out</p>
+        <ul className='mt-2 list-disc space-y-1.5 pl-5'>
+          <li>Enough 650 W panels to produce your whole day&apos;s energy (about {wh(panelYield)} each a day).</li>
+          <li>Enough 15 kWh batteries to cover what you use after dark, taken as {Math.round(CUSTOM_ASSUMPTIONS.nightShare * 100)}% of your day.</li>
+          <li>Enough 12 kVA inverters (about {kw(inverterWatts)} each) for your {peakPower.toLocaleString()} W load and the solar array.</li>
+        </ul>
+        <p className='mt-3'>
+          Prices are for the equipment only. Installation depends on your site and is quoted after a visit. Solar estimates assume about{' '}
+          {SOLAR_ASSUMPTIONS.peakSunHours} hours of full sun a day and {Math.round(SOLAR_ASSUMPTIONS.systemEfficiency * 100)}% efficiency.
+        </p>
       </div>
     </div>
   );
@@ -42,7 +80,7 @@ function explain(option, need, peakPower) {
     return (
       <>
         Its {wh(option.battery)} battery plus about <b className='text-ink'>{wh(option.solarYield)}</b> a day
-        from {option.panels} × {SOLAR_ASSUMPTIONS.panelWatts} W solar panels gives roughly{' '}
+        from {option.panels} × {option.panelWatts} W solar panels gives roughly{' '}
         <b className='text-ink'>{wh(option.dailyCapacity)}</b> a day, covering your {wh(need)}. Your {peakPower.toLocaleString()} W
         load is within its {inverter} W output.
       </>
@@ -64,23 +102,14 @@ function alternativeText(option) {
 }
 
 function Recommend({ myProduct, total, myPower }) {
-  const { best, alternative } = recommendSetup(myProduct, total, myPower);
+  const { best, alternative, custom } = recommendSetup(myProduct, total, myPower);
 
   if (!total) {
     return <p className='card p-8 text-center text-muted'>Add at least one appliance to get a recommendation.</p>;
   }
 
   if (!best) {
-    return (
-      <div className='card mx-auto max-w-2xl p-8 text-center md:p-12'>
-        <h2 className='text-2xl font-bold'>You need a custom system</h2>
-        <p className='lead mt-3'>
-          Your appliances draw {myPower.toLocaleString()} W and use about {wh(total)} a day, which is more than our
-          standard PowerCubes can handle, even with solar. Book a consultation and we&apos;ll design a system for you.
-        </p>
-        <Link href={bookHref('consultation')} className='btn-primary mt-8'>Book a consultation</Link>
-      </div>
-    );
+    return <CustomRecommendation system={custom} need={total} peakPower={myPower} />;
   }
 
   return (

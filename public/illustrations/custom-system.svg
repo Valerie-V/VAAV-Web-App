@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <title>Custom solar system: solar panel, inverter and battery</title>
+  <!-- solar panel -->
+  <g transform="translate(12 22)">
+    <path d="M18 0h104l-14 62H4z" fill="#1d3b2a"/>
+    <path d="M18 0h104l-14 62H4z" stroke="#3FBF6A" stroke-width="2"/>
+    <path d="M44 0 32 62M70 0 58 62M96 0 84 62M14 21h103M9 42h103" stroke="#3FBF6A" stroke-width="1.5" opacity=".7"/>
+    <path d="M56 62v40M44 102h24" stroke="#5c6461" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <!-- cable -->
+  <path d="M120 70c18 0 22 18 22 34" stroke="#3FBF6A" stroke-width="2.5" stroke-dasharray="4 4"/>
+  <!-- inverter -->
+  <rect x="122" y="104" width="44" height="58" rx="6" fill="#2b302e"/>
+  <rect x="130" y="113" width="28" height="14" rx="2" fill="#0d100f"/>
+  <path d="M134 121h8M144 121h10" stroke="#7BD99A" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="134" cy="140" r="2.5" fill="#3FBF6A"/>
+  <circle cx="142" cy="140" r="2.5" fill="#5c6461"/>
+  <circle cx="150" cy="140" r="2.5" fill="#5c6461"/>
+  <!-- battery -->
+  <rect x="176" y="70" width="52" height="92" rx="7" fill="#1e2321"/>
+  <rect x="176" y="70" width="52" height="92" rx="7" stroke="#3FBF6A" stroke-width="2"/>
+  <rect x="186" y="82" width="32" height="70" rx="3" fill="#0d100f"/>
+  <rect x="189" y="128" width="26" height="20" rx="2" fill="#3FBF6A"/>
+  <rect x="189" y="106" width="26" height="19" rx="2" fill="#3FBF6A"/>
+  <rect x="189" y="85" width="26" height="18" rx="2" fill="#3FBF6A" opacity=".35"/>
+  <path d="m201 61-6 8h6l-3 7 8-10h-6l3-5z" fill="#7BD99A"/>
+  <!-- ground -->
+  <path d="M8 164h224" stroke="#5c6461" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+</svg>

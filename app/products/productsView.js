@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useStateValue } from '@/context/StateProvider'
 import Modal from '@/components/modal'
 import Product from './product'
+import CustomCard from './customCard'
 import ProductInfo from './productInfo'
 import Compare from './compare'
 import Reveal from '@/components/reveal'
@@ -34,6 +35,9 @@ function ProductsView() {
               <Product product={item} onOpen={() => setSelected(item)} />
             </Reveal>
           ))}
+          <Reveal delay={(products.length % 3) * 100}>
+            <CustomCard />
+          </Reveal>
         </div>
       </section>
 
